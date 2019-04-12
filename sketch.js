@@ -44,7 +44,7 @@ function draw() {
 }
 
 function scoring() {
-  if (bird.getDistanceTo("pipe") < 0 && doScoring == true) {score++; console.log(score); doScoring = false;}
+  if (bird.getDistanceTo("pipe") < -30 && doScoring == true) {score++; console.log(score); doScoring = false;}
   else if (bird.getDistanceTo("pipe") < -142) doScoring = true; // -1 * (bird.w + pipe.w) = -142
 }
 
