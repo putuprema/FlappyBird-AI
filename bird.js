@@ -1,22 +1,15 @@
-let sprite = [];
-
-function preload() {
-  sprite[0] = loadImage('sprites/bird/bird-1.png');
-  sprite[1] = loadImage('sprites/bird/bird-2.png');
-  sprite[2] = loadImage('sprites/bird/bird-3.png');
-  sprite[3] = loadImage('sprites/bird/bird-4.png');
-}
-
 class Bird {
-  constructor() {
+  constructor(sprite, frameCount) {
     this.pos = createVector(100, 100);
     this.vel = createVector(0, 0);
     this.gravity = createVector(0, 0.3);
     this.dead = false;
     this.w = 60;
     this.h = 48;
+    this.sprite = sprite;
     this.spriteIdx = 0;
     this.animSpeed = 0.3;
+    this.animLen = frameCount;
   }
 
   fly() {
@@ -30,8 +23,8 @@ class Bird {
   }
 
   display() {
-    let index = floor(this.spriteIdx) % 4;
-    image(sprite[index], this.pos.x, this.pos.y, this.w, this.h);
+    let index = floor(this.spriteIdx) % this.animLen;
+    image(this.sprite[index], this.pos.x, this.pos.y, this.w, this.h);
   }
 
   animate() {

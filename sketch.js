@@ -5,15 +5,26 @@ let pipeIdx = 0;
 let score = 0;
 let doScoring = true;
 let bg;
+let sprite = [];
+
+function preload() {
+  bg = loadImage('sprites/bg.png');
+  sprite[0] = loadImage('sprites/bird/bird-1.png');
+  sprite[1] = loadImage('sprites/bird/bird-2.png');
+  sprite[2] = loadImage('sprites/bird/bird-3.png');
+  sprite[3] = loadImage('sprites/bird/bird-4.png');
+  sprite[4] = loadImage('sprites/pipe/pipe_head_top.png');
+  sprite[5] = loadImage('sprites/pipe/pipe_head_bottom.png');
+  sprite[6] = loadImage('sprites/pipe/pipe_body.png');
+}
 
 function setup() {
   createCanvas(360, 640);
-  bg = loadImage('sprites/bg.png');
-  bird = new Bird();
+  bird = new Bird(sprite, 4);
 
   let pipeInitX = width + 100;
   for (let i = 0; i < pipeCount; i++) {
-    pipe[i] = new Pipe(pipeInitX);
+    pipe[i] = new Pipe(pipeInitX, sprite[4], sprite[5], sprite[6]);
     pipeInitX += 250;
   }
 }

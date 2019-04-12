@@ -1,11 +1,11 @@
 class Pipe {
-  constructor(initX) {
+  constructor(initX, headTop, headBottom, body) {
     this.gap = 150;
     this.lengthTop = random(30, height/2);
     this.lengthBottom = height - (this.lengthTop + this.gap);
-    this.headTop = loadImage('sprites/pipe/pipe_head_top.png');
-    this.headBottom = loadImage('sprites/pipe/pipe_head_bottom.png');
-    this.body = loadImage('sprites/pipe/pipe_body.png');
+    this.headTop = headTop;
+    this.headBottom = headBottom;
+    this.body = body;
     this.w = 77;
     this.x = initX;
   }
