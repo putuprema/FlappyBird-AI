@@ -3,6 +3,10 @@ class Pipe {
     this.gap = 150;
     this.lengthTop = random(30, height/2);
     this.lengthBottom = height - (this.lengthTop + this.gap);
+    this.headTop = loadImage('sprites/pipe/pipe_head_top.png');
+    this.headBottom = loadImage('sprites/pipe/pipe_head_bottom.png');
+    this.body = loadImage('sprites/pipe/pipe_body.png');
+    this.w = 77;
     this.x = initX;
   }
 
@@ -11,8 +15,11 @@ class Pipe {
   }
 
   display() {
-    rect(this.x, 0, 50, this.lengthTop);
-    rect(this.x, height-this.lengthBottom, 50, this.lengthBottom);
+    image(this.body, this.x, 0, this.w, this.lengthTop);
+    image(this.headTop, this.x, this.lengthTop-30, this.w, 30);
+
+    image(this.body, this.x, height-this.lengthBottom, this.w, this.lengthBottom);
+    image(this.headBottom, this.x, height-this.lengthBottom, this.w, 30);
   }
 
   getTopPipePosition_Y() {
