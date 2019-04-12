@@ -33,15 +33,14 @@ function keyPressed() {
 function debug() {
   // textSize()
   text("X Distance to Pipe: ", 30, 400);
-  let x_distance = pipe[pipeIdx].getPipePairPosition_X() - (bird.getPosition_X() + 30);
-  if (x_distance < - 80) pipeIdx++;
+  let x_distance = bird.getDistanceTo("pipe");
   text(x_distance, 200, 400);
 
   text("Y Distance to Top Pipe: ", 30, 420);
-  let y_distance_top = bird.pos.y - pipe[pipeIdx].getTopPipePosition_Y();
+  let y_distance_top = bird.getDistanceTo("topPipe_y");
   text(y_distance_top, 200, 420);
 
   text("Y Distance to Bottom Pipe: ", 30, 440);
-  let y_distance_bottom = pipe[pipeIdx].getBottomPipePosition_Y() - (bird.getPosition_Y() + 30);
+  let y_distance_bottom = bird.getDistanceTo("bottomPipe_y");
   text(y_distance_bottom, 200, 440);
 }
