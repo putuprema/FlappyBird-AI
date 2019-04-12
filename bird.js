@@ -19,4 +19,12 @@ class Bird {
     fill(0);
     rect(this.pos.x, this.pos.y, 30, 30);
   }
+
+  getPosition_X() {
+    return this.pos.x;
+  }
+
+  getPosition_Y() {
+    return this.pos.y;
+  }
 }
