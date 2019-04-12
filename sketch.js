@@ -4,9 +4,11 @@ let pipeCount = 500;
 let pipeIdx = 0;
 let score = 0;
 let doScoring = true;
+let bg;
 
 function setup() {
   createCanvas(360, 640);
+  bg = loadImage('sprites/bg.png');
   bird = new Bird();
 
   let pipeInitX = width + 100;
@@ -17,7 +19,7 @@ function setup() {
 }
 
 function draw() {
-  background(104, 247, 255);
+  image(bg, 0, 0);
   for (let i = 0; i < pipeCount; i++) {
     pipe[i].display();
     if (!bird.dead) pipe[i].move();
