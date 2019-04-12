@@ -33,8 +33,8 @@ function keyPressed() {
 function debug() {
   // textSize()
   text("X Distance to Pipe: ", 30, 400);
-  let x_distance = pipe[pipeIdx].getPipePairPosition_X() - bird.getPosition_X();
-  if (x_distance < 0) pipeIdx++;
+  let x_distance = pipe[pipeIdx].getPipePairPosition_X() - (bird.getPosition_X() + 30);
+  if (x_distance < - 80) pipeIdx++;
   text(x_distance, 200, 400);
 
   text("Y Distance to Top Pipe: ", 30, 420);
