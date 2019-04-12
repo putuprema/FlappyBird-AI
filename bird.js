@@ -3,6 +3,7 @@ class Bird {
     this.pos = createVector(100, 100);
     this.vel = createVector(0, 0);
     this.gravity = createVector(0, 0.3);
+    this.dead = false;
   }
 
   fly() {
@@ -39,5 +40,13 @@ class Bird {
     if (to_which == "pipe") return this.distToPipe;
     else if (to_which == "topPipe_y") return this.distToTopPipe_y;
     else if (to_which == "bottomPipe_y") return this.distToBottomPipe_y;
+  }
+
+  checkCollision() {
+    this.getDistances();
+    if (this.pos.y + 30 > height) {this.pos.y = height - 30; this.vel.limit(0); this.dead = true;}
+    else if (this.getDistanceTo("pipe") < -2 && this.getDistanceTo("pipe") > -81) {
+      if (this.getDistanceTo("topPipe_y") < 1 || this.getDistanceTo("bottomPipe_y") < 1) this.dead = true;
+    }
   }
 }

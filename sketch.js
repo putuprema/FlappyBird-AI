@@ -18,20 +18,21 @@ function draw() {
   background(104, 247, 255);
   bird.display();
   bird.move();
+  bird.checkCollision();
   debug();
   for (let i = 0; i < pipeCount; i++) {
     pipe[i].display();
-    pipe[i].move();
+    if (!bird.dead) pipe[i].move();
   }
 }
 
 function keyPressed() {
-  bird.fly();
+  if (!bird.dead) bird.fly();
   return false;
 }
 
 function debug() {
-  // textSize()
+  textSize(12);
   text("X Distance to Pipe: ", 30, 400);
   let x_distance = bird.getDistanceTo("pipe");
   text(x_distance, 200, 400);
@@ -43,4 +44,7 @@ function debug() {
   text("Y Distance to Bottom Pipe: ", 30, 440);
   let y_distance_bottom = bird.getDistanceTo("bottomPipe_y");
   text(y_distance_bottom, 200, 440);
+
+  textSize(30);
+  if (bird.dead) text("YOU ARE DEAD!", 30, 500);
 }
