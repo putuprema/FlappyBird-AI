@@ -19,6 +19,7 @@ function setup() {
 function draw() {
   background(104, 247, 255);
   bird.display();
+  if (!bird.dead) bird.animate();
   bird.move();
   bird.checkCollision();
   scoring();

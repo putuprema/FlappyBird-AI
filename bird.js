@@ -1,9 +1,22 @@
+let sprite = [];
+
+function preload() {
+  sprite[0] = loadImage('sprites/bird/bird-1.png');
+  sprite[1] = loadImage('sprites/bird/bird-2.png');
+  sprite[2] = loadImage('sprites/bird/bird-3.png');
+  sprite[3] = loadImage('sprites/bird/bird-4.png');
+}
+
 class Bird {
   constructor() {
     this.pos = createVector(100, 100);
     this.vel = createVector(0, 0);
     this.gravity = createVector(0, 0.3);
     this.dead = false;
+    this.w = 60;
+    this.h = 48;
+    this.spriteIdx = 0;
+    this.animSpeed = 0.3;
   }
 
   fly() {
@@ -17,8 +30,12 @@ class Bird {
   }
 
   display() {
-    fill(0);
-    rect(this.pos.x, this.pos.y, 30, 30);
+    let index = floor(this.spriteIdx) % 4;
+    image(sprite[index], this.pos.x, this.pos.y, this.w, this.h);
+  }
+
+  animate() {
+    this.spriteIdx += this.animSpeed;
   }
 
   getPosition_X() {
@@ -30,10 +47,10 @@ class Bird {
   }
 
   getDistances() {
-    this.distToPipe = pipe[pipeIdx].getPipePairPosition_X() - (bird.getPosition_X() + 30);
+    this.distToPipe = pipe[pipeIdx].getPipePairPosition_X() - (bird.getPosition_X() + this.w);
     if (this.distToPipe < -80) pipeIdx++;
     this.distToTopPipe_y = bird.getPosition_Y() - pipe[pipeIdx].getTopPipePosition_Y();
-    this.distToBottomPipe_y = pipe[pipeIdx].getBottomPipePosition_Y() - (bird.getPosition_Y() + 30);
+    this.distToBottomPipe_y = pipe[pipeIdx].getBottomPipePosition_Y() - (bird.getPosition_Y() + this.h);
   }
 
   getDistanceTo(to_which) {
@@ -44,9 +61,9 @@ class Bird {
 
   checkCollision() {
     this.getDistances();
-    if (this.pos.y + 30 > height) {this.pos.y = height - 30; this.vel.limit(0); this.dead = true;}
+    if (this.pos.y + (this.h - 6) > height) {this.pos.y = height - (this.h - 6); this.vel.limit(0); this.dead = true; this.spriteIdx = 1;}
     else if (this.getDistanceTo("pipe") < -2 && this.getDistanceTo("pipe") > -81) {
-      if (this.getDistanceTo("topPipe_y") < 1 || this.getDistanceTo("bottomPipe_y") < 1) this.dead = true;
+      if (this.getDistanceTo("topPipe_y") < 1 || this.getDistanceTo("bottomPipe_y") < 1) {this.dead = true; this.spriteIdx = 1;}
     }
   }
 }
