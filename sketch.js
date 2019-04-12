@@ -2,6 +2,8 @@ let bird;
 let pipe = [];
 let pipeCount = 500;
 let pipeIdx = 0;
+let score = 0;
+let doScoring = true;
 
 function setup() {
   createCanvas(500, 600);
@@ -19,11 +21,17 @@ function draw() {
   bird.display();
   bird.move();
   bird.checkCollision();
+  scoring();
   debug();
   for (let i = 0; i < pipeCount; i++) {
     pipe[i].display();
     if (!bird.dead) pipe[i].move();
   }
+}
+
+function scoring() {
+  if (bird.getDistanceTo("pipe") < 0 && doScoring == true) {score++; console.log(score); doScoring = false;}
+  else if (bird.getDistanceTo("pipe") < -80) doScoring = true;
 }
 
 function keyPressed() {
