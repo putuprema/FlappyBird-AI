@@ -28,12 +28,14 @@ class Bird {
     return this.pos.y;
   }
 
-  getDistanceTo(to_which) {
+  getDistances() {
     this.distToPipe = pipe[pipeIdx].getPipePairPosition_X() - (bird.getPosition_X() + 30);
     if (this.distToPipe < -80) pipeIdx++;
     this.distToTopPipe_y = bird.getPosition_Y() - pipe[pipeIdx].getTopPipePosition_Y();
     this.distToBottomPipe_y = pipe[pipeIdx].getBottomPipePosition_Y() - (bird.getPosition_Y() + 30);
+  }
 
+  getDistanceTo(to_which) {
     if (to_which == "pipe") return this.distToPipe;
     else if (to_which == "topPipe_y") return this.distToTopPipe_y;
     else if (to_which == "bottomPipe_y") return this.distToBottomPipe_y;
