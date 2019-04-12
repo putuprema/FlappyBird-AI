@@ -18,16 +18,16 @@ function setup() {
 
 function draw() {
   background(104, 247, 255);
+  for (let i = 0; i < pipeCount; i++) {
+    pipe[i].display();
+    if (!bird.dead) pipe[i].move();
+  }
   bird.display();
   if (!bird.dead) bird.animate();
   bird.move();
   bird.checkCollision();
   scoring();
   debug();
-  for (let i = 0; i < pipeCount; i++) {
-    pipe[i].display();
-    if (!bird.dead) pipe[i].move();
-  }
 }
 
 function scoring() {
