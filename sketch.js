@@ -6,7 +6,7 @@ let score = 0;
 let doScoring = true;
 
 function setup() {
-  createCanvas(500, 600);
+  createCanvas(360, 640);
   bird = new Bird();
 
   let pipeInitX = width + 100;
