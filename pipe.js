@@ -1,6 +1,6 @@
 class Pipe {
   constructor(initX) {
-    this.gap = 120;
+    this.gap = 150;
     this.lengthTop = random(30, height/2);
     this.lengthBottom = height - (this.lengthTop + this.gap);
     this.x = initX;
