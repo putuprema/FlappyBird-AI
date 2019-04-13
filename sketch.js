@@ -34,11 +34,13 @@ function setup() {
 }
 
 function draw() {
+  imageMode(CORNER);
   image(bg, 0, 0);
   for (let i = 0; i < pipeCount; i++) {
     pipe[i].display();
     if (!bird.dead) pipe[i].move();
   }
+  imageMode(CENTER);
   bird.display();
   if (!bird.dead) bird.animate();
   bird.move();
