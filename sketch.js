@@ -3,6 +3,7 @@ let pipe = [];
 let pipeCount = 500;
 let pipeIdx = 0;
 let score = 0;
+let best = 0;
 let doScoring = true;
 let bg;
 let sprite = [];
@@ -45,6 +46,9 @@ function draw() {
 
 function scoring() {
   text(score, width/2, 100);
+  if (bird.dead) {
+    if (score > best) best = score;
+  }
   if (bird.getDistanceTo("pipe") < -30 && doScoring == true) {score++; console.log(score); doScoring = false;}
   else if (bird.getDistanceTo("pipe") < -142) doScoring = true; // -1 * (bird.w + pipe.w) = -142
 }
@@ -69,5 +73,10 @@ function debug() {
   text(y_distance_bottom, 200, 440);
 
   textSize(30);
-  if (bird.dead) text("YOU ARE DEAD!", 30, 500);
+  if (bird.dead) {
+    text("YOU ARE DEAD!", 30, 500);
+    text("Best: ", 30, 550);
+    text(best, 150, 550);
+  }
+
 }
