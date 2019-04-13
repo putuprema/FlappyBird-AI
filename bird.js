@@ -32,11 +32,11 @@ class Bird {
   }
 
   getPosition_X() {
-    return this.pos.x;
+    return this.pos.x - (this.w/2);
   }
 
   getPosition_Y() {
-    return this.pos.y;
+    return this.pos.y - (this.h/2);
   }
 
   getDistances() {
