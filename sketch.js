@@ -7,8 +7,10 @@ let best = 0;
 let doScoring = true;
 let bg;
 let sprite = [];
+let font;
 
 function preload() {
+  font = loadFont('fonts/BebasNeue.ttf');
   bg = loadImage('sprites/bg.png');
   sprite[0] = loadImage('sprites/bird/bird-1.png');
   sprite[1] = loadImage('sprites/bird/bird-2.png');
@@ -22,6 +24,7 @@ function preload() {
 function setup() {
   createCanvas(360, 640);
   bird = new Bird(sprite, 4);
+  textFont(font);
 
   let pipeInitX = width + 100;
   for (let i = 0; i < pipeCount; i++) {
@@ -45,6 +48,7 @@ function draw() {
 }
 
 function scoring() {
+  textSize(50);
   text(score, width/2, 100);
   if (bird.dead) {
     if (score > best) best = score;
@@ -73,7 +77,10 @@ function keyPressed() {
 }
 
 function debug() {
-  textSize(12);
+  textSize(17);
+  fill(255);
+  stroke(0);
+  strokeWeight(3);
   text("X Distance to Pipe: ", 30, 400);
   let x_distance = bird.getDistanceTo("pipe");
   text(x_distance, 200, 400);
