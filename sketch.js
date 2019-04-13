@@ -55,6 +55,20 @@ function scoring() {
 
 function keyPressed() {
   if (!bird.dead) bird.fly();
+  else {
+    if (key == 'r') {
+      bird.dead = false;
+      bird = new Bird(sprite, 4);
+      score = 0;
+      doScoring = true;
+      pipeIdx = 0;
+      pipeInitX = width + 100;
+      for (let i = 0; i < pipeCount; i++) {
+        pipe[i] = new Pipe(pipeInitX, sprite[4], sprite[5], sprite[6]);
+        pipeInitX += 250;
+      }
+    }
+  }
   return false;
 }
 
