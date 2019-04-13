@@ -63,7 +63,6 @@ function keyPressed() {
   if (!bird.dead && key == ' ') bird.fly();
   else if (bird.dead){
     if (key == 'r') {
-      bird.dead = false;
       bird = new Bird(sprite, 4);
       score = 0;
       doScoring = true;
