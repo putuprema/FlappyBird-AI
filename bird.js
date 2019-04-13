@@ -41,7 +41,7 @@ class Bird {
 
   getDistances() {
     this.distToPipe = pipe[pipeIdx].getPipePairPosition_X() - (this.getPosition_X() + this.w);
-    if (this.distToPipe < -142) pipeIdx++; // -1 * (this.w + pipe.w) = -142
+    if (this.distToPipe < -139) pipeIdx++; // -1 * (this.w + pipe.w) = -142
     this.distToTopPipe_y = bird.getPosition_Y() - pipe[pipeIdx].getTopPipePosition_Y();
     this.distToBottomPipe_y = pipe[pipeIdx].getBottomPipePosition_Y() - (bird.getPosition_Y() + this.h);
   }
@@ -55,7 +55,7 @@ class Bird {
   checkCollision() {
     this.getDistances();
     if (this.pos.y + (this.h - 6) > height) {this.pos.y = height - (this.h - 6); this.vel.limit(0); this.dead = true; this.spriteIdx = 1;}
-    else if (this.getDistanceTo("pipe") <= 0 && this.getDistanceTo("pipe") > -143) {
+    else if (this.getDistanceTo("pipe") <= 0 && this.getDistanceTo("pipe") > -140) {
       if (this.getDistanceTo("topPipe_y") <= 0 || this.getDistanceTo("bottomPipe_y") <= 0) {this.dead = true; this.spriteIdx = 1;}
     }
   }
