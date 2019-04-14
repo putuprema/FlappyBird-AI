@@ -22,7 +22,7 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(360, 640);
+  createCanvas(360, 720);
   bird = new Bird(sprite, 4);
   textFont(font);
 
