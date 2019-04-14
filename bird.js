@@ -54,7 +54,7 @@ class Bird {
 
   checkCollision() {
     this.getDistances();
-    if (this.pos.y + (this.h/2 - 6) > height) {this.pos.y = height - (this.h/2 - 6); this.vel.limit(0); this.dead = true; this.spriteIdx = 1;}
+    if (this.pos.y + (this.h/2 - 6) > (height-bg.gnd_h)) {this.pos.y = (height-bg.gnd_h) - (this.h/2 - 6); this.vel.limit(0); this.dead = true; this.spriteIdx = 1;}
     else if (this.getDistanceTo("pipe") <= 0 && this.getDistanceTo("pipe") > -135) {
       if (this.getDistanceTo("topPipe_y") <= 0 || this.getDistanceTo("bottomPipe_y") <= 0) {this.dead = true; this.spriteIdx = 1;}
     }

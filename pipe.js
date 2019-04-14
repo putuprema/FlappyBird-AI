@@ -2,7 +2,7 @@ class Pipe {
   constructor(initX, headTop, headBottom, body) {
     this.gap = 150;
     this.lengthTop = random(30, height/2);
-    this.lengthBottom = height - (this.lengthTop + this.gap);
+    this.lengthBottom = (height-bg.gnd_h) - (this.lengthTop + this.gap);
     this.headTop = headTop;
     this.headBottom = headBottom;
     this.body = body;
@@ -18,8 +18,8 @@ class Pipe {
     image(this.body, this.x, 0, this.w, this.lengthTop);
     image(this.headTop, this.x, this.lengthTop-30, this.w, 30);
 
-    image(this.body, this.x, height-this.lengthBottom, this.w, this.lengthBottom);
-    image(this.headBottom, this.x, height-this.lengthBottom, this.w, 30);
+    image(this.body, this.x, (height-bg.gnd_h)-this.lengthBottom, this.w, this.lengthBottom);
+    image(this.headBottom, this.x, (height-bg.gnd_h)- this.lengthBottom, this.w, 30);
   }
 
   getTopPipePosition_Y() {
@@ -27,7 +27,7 @@ class Pipe {
   }
 
   getBottomPipePosition_Y() {
-    return height-this.lengthBottom;
+    return (height-bg.gnd_h)-this.lengthBottom;
   }
 
   getPipePairPosition_X() {
