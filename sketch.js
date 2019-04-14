@@ -60,7 +60,7 @@ function scoring() {
     if (score > best) best = score;
   }
   if (bird.getDistanceTo("pipe") < -30 && doScoring == true) {score++; console.log(score); doScoring = false;}
-  else if (bird.getDistanceTo("pipe") < -139) doScoring = true; // -1 * (bird.w + pipe.w) - 3 = -142
+  else if (bird.getDistanceTo("pipe") < -140) doScoring = true; // -1 * (bird.w + pipe.w) - 3 = -142
 }
 
 function touchStarted() {
