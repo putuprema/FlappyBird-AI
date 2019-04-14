@@ -41,7 +41,7 @@ function draw() {
   bg.display();
   if (!bird.dead) bg.scroll();
   for (let i = 0; i < pipeCount; i++) {
-    pipe[i].display();
+    if (pipe[i].getPipePairPosition_X() <= width) pipe[i].display();
     if (!bird.dead) pipe[i].move();
   }
   imageMode(CENTER);
