@@ -63,6 +63,23 @@ function scoring() {
   else if (bird.getDistanceTo("pipe") < -139) doScoring = true; // -1 * (bird.w + pipe.w) - 3 = -142
 }
 
+function touchStarted() {
+  if (!bird.dead) bird.fly();
+  else if (bird.dead && bird.pos.y == (height-bg.gnd_h) - (bird.h/2 - 6)) {
+      bg = new Background(skyRes, gndRes, 2);
+      bird = new Bird(sprite, 4);
+      score = 0;
+      doScoring = true;
+      pipeIdx = 0;
+      pipeInitX = width + 100;
+      for (let i = 0; i < pipeCount; i++) {
+        pipe[i] = new Pipe(pipeInitX, sprite[4], sprite[5], sprite[6]);
+        pipeInitX += 250;
+      }
+  }
+  return false;
+}
+
 function keyPressed() {
   if (!bird.dead && key == ' ') bird.fly();
   else if (bird.dead){
