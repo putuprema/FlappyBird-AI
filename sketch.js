@@ -5,13 +5,15 @@ let pipeIdx = 0;
 let score = 0;
 let best = 0;
 let doScoring = true;
-let bg;
+let skyRes;
+let gndRes;
 let sprite = [];
 let font;
 
 function preload() {
   font = loadFont('fonts/BebasNeue.ttf');
-  bg = loadImage('sprites/bg.png');
+  skyRes = loadImage('sprites/sky.png');
+  gndRes = loadImage('sprites/ground.png');
   sprite[0] = loadImage('sprites/bird/bird-1.png');
   sprite[1] = loadImage('sprites/bird/bird-2.png');
   sprite[2] = loadImage('sprites/bird/bird-3.png');
@@ -24,6 +26,7 @@ function preload() {
 function setup() {
   createCanvas(360, 720);
   bird = new Bird(sprite, 4);
+  bg = new Background(skyRes, gndRes, 2);
   textFont(font);
 
   let pipeInitX = width + 100;
@@ -35,7 +38,8 @@ function setup() {
 
 function draw() {
   imageMode(CORNER);
-  image(bg, 0, 0);
+  bg.display();
+  if (!bird.dead) bg.scroll();
   for (let i = 0; i < pipeCount; i++) {
     pipe[i].display();
     if (!bird.dead) pipe[i].move();
@@ -63,6 +67,7 @@ function keyPressed() {
   if (!bird.dead && key == ' ') bird.fly();
   else if (bird.dead){
     if (key == 'r') {
+      bg = new Background(skyRes, gndRes, 2);
       bird = new Bird(sprite, 4);
       score = 0;
       doScoring = true;
