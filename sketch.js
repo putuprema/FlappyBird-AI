@@ -48,7 +48,7 @@ const myGame = new p5((main) => {
       if (score > best) best = score;
     }
     if (bird.getDistanceTo('pipe') < -30 && doScoring) {
-      score += 1; doScoring = false; console.log(score); 
+      score += 1; doScoring = false;
     } else if (bird.getDistanceTo('pipe') < -140) doScoring = true;
   };
 
