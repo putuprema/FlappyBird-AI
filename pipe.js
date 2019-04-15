@@ -1,8 +1,8 @@
-class Pipe {
-  constructor(initX, headTop, headBottom, body) {
+export default class Pipe {
+  constructor(main, gndHeight, initX, headTop, headBottom, body) {
     this.gap = 150;
-    this.lengthTop = 30 + (Math.random() * (height/2 + 1));
-    this.lengthBottom = (height-bg.gnd_h) - (this.lengthTop + this.gap);
+    this.lengthTop = 30 + (Math.random() * (main.height / 2 + 1));
+    this.lengthBottom = (main.height - gndHeight) - (this.lengthTop + this.gap);
     this.headTop = headTop;
     this.headBottom = headBottom;
     this.body = body;
@@ -14,23 +14,29 @@ class Pipe {
     this.x -= 3;
   }
 
-  display() {
-    image(this.body, this.x, 0, this.w, this.lengthTop);
-    image(this.headTop, this.x, this.lengthTop-30, this.w, 30);
+  display(main, gndHeight) {
+    main.image(this.body, this.x, 0, this.w, this.lengthTop);
+    main.image(this.headTop, this.x, this.lengthTop - 30, this.w, 30);
 
-    image(this.body, this.x, (height-bg.gnd_h)-this.lengthBottom, this.w, this.lengthBottom);
-    image(this.headBottom, this.x, (height-bg.gnd_h)- this.lengthBottom, this.w, 30);
+    main.image(
+      this.body,
+      this.x,
+      (main.height - gndHeight) - this.lengthBottom,
+      this.w,
+      this.lengthBottom,
+    );
+    main.image(this.headBottom, this.x, (main.height - gndHeight) - this.lengthBottom, this.w, 30);
   }
 
-  getTopPipePosition_Y() {
+  getTopPipePositionY() {
     return this.lengthTop;
   }
 
-  getBottomPipePosition_Y() {
-    return (height-bg.gnd_h)-this.lengthBottom;
+  getBottomPipePositionY(main, gndHeight) {
+    return (main.height - gndHeight) - this.lengthBottom;
   }
 
-  getPipePairPosition_X() {
+  getPipePairPositionX() {
     return this.x;
   }
 }

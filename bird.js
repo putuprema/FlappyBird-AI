@@ -1,8 +1,8 @@
-class Bird {
-  constructor(sprite, frameCount) {
-    this.pos = createVector(100, 100);
-    this.vel = createVector(0, 0);
-    this.gravity = createVector(0, 0.3);
+export default class Bird {
+  constructor(main, sprite, frameCount) {
+    this.pos = main.createVector(100, 100);
+    this.vel = main.createVector(0, 0);
+    this.gravity = main.createVector(0, 0.3);
     this.dead = false;
     this.w = 65;
     this.h = 52;
@@ -22,41 +22,45 @@ class Bird {
     this.vel.limit(13);
   }
 
-  display() {
-    let index = floor(this.spriteIdx) % this.animLen;
-    image(this.sprite[index], this.pos.x, this.pos.y, this.w, this.h);
+  display(main) {
+    const index = main.floor(this.spriteIdx) % this.animLen;
+    main.image(this.sprite[index], this.pos.x, this.pos.y, this.w, this.h);
   }
 
   animate() {
     this.spriteIdx += this.animSpeed;
   }
 
-  getPosition_X() {
-    return this.pos.x - (this.w/2);
+  getPositionX() {
+    return this.pos.x - (this.w / 2);
   }
 
-  getPosition_Y() {
-    return this.pos.y - (this.h/2);
+  getPositionY() {
+    return this.pos.y - (this.h / 2);
   }
 
-  getDistances() {
-    this.distToPipe = pipe[pipeIdx].getPipePairPosition_X() - (this.getPosition_X() + this.w);
-    if (this.distToPipe < -140) pipeIdx++;
-    this.distToTopPipe_y = bird.getPosition_Y() - pipe[pipeIdx].getTopPipePosition_Y();
-    this.distToBottomPipe_y = pipe[pipeIdx].getBottomPipePosition_Y() - (bird.getPosition_Y() + this.h);
+  getDistances(pipePairPositionX, topPipePositionY, bottomPipePostitionY, birdPostitionY) {
+    this.distToPipe = pipePairPositionX - (this.getPositionX() + this.w);
+    this.distToTopPipe_y = birdPostitionY - topPipePositionY;
+    this.distToBottomPipe_y = bottomPipePostitionY - (birdPostitionY + this.h);
   }
 
-  getDistanceTo(to_which) {
-    if (to_which == "pipe") return this.distToPipe;
-    else if (to_which == "topPipe_y") return this.distToTopPipe_y;
-    else if (to_which == "bottomPipe_y") return this.distToBottomPipe_y;
+  getDistanceTo(toWhich) {
+    if (toWhich === 'pipe') return this.distToPipe;
+    if (toWhich === 'topPipe_y') return this.distToTopPipe_y;
+    if (toWhich === 'bottomPipe_y') return this.distToBottomPipe_y;
+    return 0;
   }
 
-  checkCollision() {
-    this.getDistances();
-    if (this.pos.y + (this.h/2 - 6) > (height-bg.gnd_h)) {this.pos.y = (height-bg.gnd_h) - (this.h/2 - 6); this.vel.limit(0); this.dead = true; this.spriteIdx = 1;}
-    else if (this.getDistanceTo("pipe") <= 0 && this.getDistanceTo("pipe") > -130) {
-      if (this.getDistanceTo("topPipe_y") <= 0 || this.getDistanceTo("bottomPipe_y") <= 0) {this.dead = true; this.spriteIdx = 1;}
+  checkCollision(main, gndHeight) {
+    if (this.pos.y + (this.h / 2 - 6) > (main.height - gndHeight)) {
+      this.pos.y = (main.height - gndHeight) - (this.h / 2 - 6);
+      this.vel.limit(0);
+      this.dead = true;
+      this.spriteIdx = 1;
+    } else if (this.getDistanceTo('pipe') <= 0 && this.getDistanceTo('pipe') > -130 && (this.getDistanceTo('topPipe_y') <= 0 || this.getDistanceTo('bottomPipe_y') <= 0)) {
+      this.dead = true;
+      this.spriteIdx = 1;
     }
   }
 }
