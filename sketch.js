@@ -56,7 +56,7 @@ var myGame = new p5( function ( main ) {
     bird.display(main);
     if (!bird.dead) bird.animate();
     bird.move();
-    bird.getDistances(main, pipe[pipeIdx].getPipePairPosition_X(), pipe[pipeIdx].getTopPipePosition_Y(), pipe[pipeIdx].getBottomPipePosition_Y(main, gndHeight), bird.getPosition_Y());
+    bird.getDistances(pipe[pipeIdx].getPipePairPosition_X(), pipe[pipeIdx].getTopPipePosition_Y(), pipe[pipeIdx].getBottomPipePosition_Y(main, gndHeight), bird.getPosition_Y());
     if (bird.getDistanceTo("pipe") < -140) pipeIdx++;
     bird.checkCollision(main, gndHeight);
     main.scoring();
