@@ -49,7 +49,7 @@ const myGame = new p5((main) => {
     }
     if (bird.getDistanceTo('pipe') < -30 && doScoring) {
       score += 1; doScoring = false;
-    } else if (bird.getDistanceTo('pipe') < -140) doScoring = true;
+    } else if (bird.getDistanceTo('pipe') < -128) doScoring = true;
   };
 
   main.preload = () => {
@@ -96,7 +96,7 @@ const myGame = new p5((main) => {
       pipe[pipeIdx].getBottomPipePositionY(main, gndHeight),
       bird.getPositionY(),
     );
-    if (bird.getDistanceTo('pipe') < -140) pipeIdx += 1;
+    if (bird.getDistanceTo('pipe') < -128) pipeIdx += 1;
     bird.checkCollision(main, gndHeight);
     scoring();
     debug();
