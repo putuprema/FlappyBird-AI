@@ -61,6 +61,7 @@ export default class Bird {
     } else if (this.getDistanceTo('pipe') <= 0 && this.getDistanceTo('pipe') > -130 && (this.getDistanceTo('topPipe_y') <= 0 || this.getDistanceTo('bottomPipe_y') <= 0)) {
       this.dead = true;
       this.spriteIdx = 1;
+      if (this.vel.y < 0) this.vel.limit(0);
     }
   }
 }
