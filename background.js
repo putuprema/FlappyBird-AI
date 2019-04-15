@@ -10,7 +10,7 @@ export default class Background {
 
   display(main) {
     main.image(this.sky, this.sky_x, 0);
-    main.image(this.gnd, this.gnd_x, main.height-this.gnd_h);
+    main.image(this.gnd, this.gnd_x, main.height - this.gnd_h);
   }
 
   scroll() {
