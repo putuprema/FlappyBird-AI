@@ -1,16 +1,16 @@
-class Background {
-  constructor(skyImg, gndImg, skyScrollSpeed) {
+export default class Background {
+  constructor(skyImg, gndImg, gndHeight, skyScrollSpeed) {
     this.sky = skyImg;
     this.sky_x = 0;
     this.gnd = gndImg;
     this.gnd_x = 0;
-    this.gnd_h = 115;
+    this.gnd_h = gndHeight;
     this.skyScrollSpeed = skyScrollSpeed;
   }
 
-  display() {
-    image(this.sky, this.sky_x, 0);
-    image(this.gnd, this.gnd_x, height-this.gnd_h);
+  display(main) {
+    main.image(this.sky, this.sky_x, 0);
+    main.image(this.gnd, this.gnd_x, main.height-this.gnd_h);
   }
 
   scroll() {
