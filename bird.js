@@ -13,6 +13,8 @@ export default class Bird {
     this.animSpeed = 0.3;
     this.animLen = frameCount;
     this.brain = new NeuralNetwork(4, 2, 2);
+    this.fitnessScore = 0;
+    this.doScoring = true;
   }
 
   fly() {
@@ -74,5 +76,11 @@ export default class Bird {
       this.spriteIdx = 1;
       if (this.vel.y < 0) this.vel.limit(0);
     }
+  }
+
+  updateFitness() {
+    if (this.distToPipe < -30 && this.doScoring) {
+      this.fitnessScore += 1; this.doScoring = false;
+    } else if (this.distToPipe < -128) this.doScoring = true;
   }
 }
