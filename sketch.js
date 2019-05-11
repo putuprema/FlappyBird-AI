@@ -4,18 +4,16 @@ import Background from './background.js';
 import Bird from './bird.js';
 
 const myGame = new p5((main) => {
-  const POPULATION_SIZE = 1;
+  const MUTATION_RATE = 0.1;
+  const POPULATION_SIZE = 100;
   const gndHeight = 115;
   const sprite = [];
   const pipe = [];
   const pipeCount = 500;
-  const bird = [];
-  const deadBirdIdx = [];
+  let bird = [];
+  let deadBirdIdx = [];
   let birdsDead = 0;
   let pipeIdx = 0;
-  let score = 0;
-  let best = 0;
-  let doScoring = true;
   let skyRes;
   let gndRes;
   let font;
@@ -23,15 +21,43 @@ const myGame = new p5((main) => {
   let pipeInitX;
   let bestBirdIdx;
 
+  const naturalSelection = () => {
+    let newGen = [];
+    newGen[0] = new Bird(main, sprite, 4);
+    newGen[0].brain = bird[bestBirdIdx].brain;
+    for (let i = 1; i < POPULATION_SIZE; i += 1) {
+      newGen[i] = new Bird(main, sprite, 4);
+      newGen[i].brain = bird[bestBirdIdx].brain;
+      newGen[i].brain.mutate(MUTATION_RATE);
+    }
+    return newGen;
+  };
+
+  const reset = () => {
+    deadBirdIdx = [];
+    birdsDead = 0;
+    // for (let i = 0; i < POPULATION_SIZE; i += 1) {
+    //   bird[i] = new Bird(main, sprite, 4);
+    // }
+    bg = new Background(skyRes, gndRes, gndHeight, 2);
+    pipeIdx = 0;
+    pipeInitX = main.width + 100;
+    for (let i = 0; i < pipeCount; i += 1) {
+      // pipe[i] = new Pipe(main, gndHeight, pipeInitX, sprite[4], sprite[5], sprite[6]);
+      pipe[i].x = pipeInitX;
+      pipeInitX += 250;
+    }
+  };
+
   const findBestBird = () => {
     let maxScore = -1;
     for (let i = 0; i < POPULATION_SIZE; i += 1) {
       if (bird[i].fitnessScore > maxScore) {
         maxScore = bird[i].fitnessScore;
         bestBirdIdx = i;
+      }
     }
-
-  }
+  };
 
   const findElement = (arr, value) => {
     for (let i = 0; i < arr.length; i += 1) {
@@ -57,12 +83,21 @@ const myGame = new p5((main) => {
     main.text('Y Distance to Ground: ', 30, 460);
     main.text(bird[0].getDistanceTo('ground'), 200, 460);
 
-    main.textSize(30);
-    if (birdsDead === POPULATION_SIZE) {
-      main.text('YOU ARE DEAD!', 30, 500);
-      main.text('Best: ', 30, 550);
-      main.text(best, 150, 550);
-    }
+    main.text('bird[0] score: ', 30, 480);
+    main.text(bird[0].fitnessScore, 200, 480);
+
+    // if (!bird[0].dead) {
+    //   main.text('bird[0] output0: ', 30, 500);
+    //   main.text(bird[0].outputs[0], 200, 500);
+
+    //   main.text('bird[0] output1: ', 30, 520);
+    //   main.text(bird[0].outputs[1], 200, 520);
+    // }
+
+    // main.textSize(30);
+    // if (birdsDead === POPULATION_SIZE) {
+    //   main.text('YOU ARE DEAD!', 30, 500);
+    // }
   };
 
   // const scoring = () => {
@@ -92,7 +127,7 @@ const myGame = new p5((main) => {
   main.setup = () => {
     main.createCanvas(360, 720);
     for (let i = 0; i < POPULATION_SIZE; i += 1) {
-      bird[i] = new Bird(main, sprite, 4, Math.random() * (main.height / 2));
+      bird[i] = new Bird(main, sprite, 4);
     }
     bg = new Background(skyRes, gndRes, gndHeight, 2);
     main.textFont(font);
@@ -117,73 +152,37 @@ const myGame = new p5((main) => {
       if (!bird[i].dead) {
         bird[i].display(main);
         bird[i].animate();
-      }
-      bird[i].think();
-      bird[i].move();
-      bird[i].getDistances(
-        pipe[pipeIdx].getPipePairPositionX(),
-        pipe[pipeIdx].getTopPipePositionY(),
-        pipe[pipeIdx].getBottomPipePositionY(main, gndHeight),
-        bird[i].getPositionY(),
-        (main.height - gndHeight),
-      );
-      if (bird[i].getDistanceTo('pipe') < -128) pipeIdx += 1;
-      bird[i].checkCollision(main, gndHeight);
-      bird[i].updateFitness();
-      if (bird[i].dead && birdsDead !== POPULATION_SIZE) {
-        let found = findElement(deadBirdIdx, i);
+        bird[i].think();
+        bird[i].move();
+        bird[i].getDistances(
+          pipe[pipeIdx].getPipePairPositionX(),
+          pipe[pipeIdx].getTopPipePositionY(),
+          pipe[pipeIdx].getBottomPipePositionY(main, gndHeight),
+          bird[i].getPositionY(),
+          (main.height - gndHeight),
+        );
+        if (bird[i].getDistanceTo('pipe') < -128) pipeIdx += 1;
+        bird[i].checkCollision(main, gndHeight);
+        bird[i].updateFitness();
+      } else if (bird[i].dead && birdsDead !== POPULATION_SIZE) {
+        const found = findElement(deadBirdIdx, i);
         if (found === undefined) {
           deadBirdIdx.push(i);
           birdsDead += 1;
-          // console.log(birdsDead);
         }
       }
     }
-    if (birdsDead === POPULATION_SIZE) findBestBird();
-    // scoring();
+
+    main.text('bird[0] output0: ', 30, 500);
+    main.text(bird[0].outputs[0], 200, 500);
+
+    main.text('bird[0] output1: ', 30, 520);
+    main.text(bird[0].outputs[1], 200, 520);
+    if (birdsDead === POPULATION_SIZE) {
+      findBestBird();
+      bird = naturalSelection();
+      reset();
+    }
     debug();
-  };
-
-  // main.touchStarted = () => {
-  //   if (birdsDead !== POPULATION_SIZE) bird.fly();
-  //   else if (bird.dead && bird.pos.y === (main.height - bg.gnd_h) - (bird.h / 2 - 6)) {
-  //     bird = new Bird(main, sprite, 4);
-  //     bg = new Background(skyRes, gndRes, gndHeight, 2);
-  //     score = 0;
-  //     doScoring = true;
-  //     pipeIdx = 0;
-  //     pipeInitX = main.width + 100;
-  //     for (let i = 0; i < pipeCount; i += 1) {
-  //       pipe[i] = new Pipe(main, gndHeight, pipeInitX, sprite[4], sprite[5], sprite[6]);
-  //       pipeInitX += 250;
-  //     }
-  //   }
-  //   return false;
-  // };
-
-  main.keyPressed = () => {
-    if (birdsDead !== POPULATION_SIZE && main.key === ' ') {
-      for (let i = 0; i < POPULATION_SIZE; i += 1) {
-        if (!bird[i].dead) bird[i].fly();
-      }
-    } else if (birdsDead === POPULATION_SIZE) {
-      if (main.key === 'r') {
-        for (let i = 0; i <= deadBirdIdx.length; i += 1) deadBirdIdx.pop();
-        birdsDead = 0;
-        for (let i = 0; i < POPULATION_SIZE; i += 1) {
-          bird[i] = new Bird(main, sprite, 4, Math.random() * (main.height / 2));
-        }
-        bg = new Background(skyRes, gndRes, gndHeight, 2);
-        score = 0;
-        doScoring = true;
-        pipeIdx = 0;
-        pipeInitX = main.width + 100;
-        for (let i = 0; i < pipeCount; i += 1) {
-          pipe[i] = new Pipe(main, gndHeight, pipeInitX, sprite[4], sprite[5], sprite[6]);
-          pipeInitX += 250;
-        }
-      }
-    }
-    return false;
   };
 });
