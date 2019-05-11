@@ -1,6 +1,6 @@
 export default class Bird {
-  constructor(main, sprite, frameCount) {
-    this.pos = main.createVector(100, 100);
+  constructor(main, sprite, frameCount, initialHeight) {
+    this.pos = main.createVector(100, initialHeight);
     this.vel = main.createVector(0, 0);
     this.gravity = main.createVector(0, 0.3);
     this.dead = false;
