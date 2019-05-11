@@ -4,7 +4,7 @@ import Background from './background.js';
 import Bird from './bird.js';
 
 const myGame = new p5((main) => {
-  const POPULATION_SIZE = 2;
+  const POPULATION_SIZE = 1;
   const gndHeight = 115;
   const sprite = [];
   const pipe = [];
@@ -29,27 +29,30 @@ const myGame = new p5((main) => {
     return undefined;
   };
 
-  // const debug = () => {
-  //   main.textSize(17);
-  //   main.fill(255);
-  //   main.stroke(0);
-  //   main.strokeWeight(3);
-  //   main.text('X Distance to Pipe: ', 30, 400);
-  //   main.text(bird.getDistanceTo('pipe'), 200, 400);
+  const debug = () => {
+    main.textSize(17);
+    main.fill(255);
+    main.stroke(0);
+    main.strokeWeight(3);
+    main.text('X Distance to Pipe: ', 30, 400);
+    main.text(bird[0].getDistanceTo('pipe'), 200, 400);
 
-  //   main.text('Y Distance to Top Pipe: ', 30, 420);
-  //   main.text(bird.getDistanceTo('topPipe_y'), 200, 420);
+    main.text('Y Distance to Top Pipe: ', 30, 420);
+    main.text(bird[0].getDistanceTo('topPipe_y'), 200, 420);
 
-  //   main.text('Y Distance to Bottom Pipe: ', 30, 440);
-  //   main.text(bird.getDistanceTo('bottomPipe_y'), 200, 440);
+    main.text('Y Distance to Bottom Pipe: ', 30, 440);
+    main.text(bird[0].getDistanceTo('bottomPipe_y'), 200, 440);
 
-  //   main.textSize(30);
-  //   if (bird.dead) {
-  //     main.text('YOU ARE DEAD!', 30, 500);
-  //     main.text('Best: ', 30, 550);
-  //     main.text(best, 150, 550);
-  //   }
-  // };
+    main.text('Y Distance to Ground: ', 30, 460);
+    main.text(bird[0].getDistanceTo('ground'), 200, 460);
+
+    main.textSize(30);
+    if (birdsDead === POPULATION_SIZE) {
+      main.text('YOU ARE DEAD!', 30, 500);
+      main.text('Best: ', 30, 550);
+      main.text(best, 150, 550);
+    }
+  };
 
   // const scoring = () => {
   //   main.textSize(50);
@@ -124,7 +127,7 @@ const myGame = new p5((main) => {
       }
     }
     // scoring();
-    // debug();
+    debug();
   };
 
   // main.touchStarted = () => {
