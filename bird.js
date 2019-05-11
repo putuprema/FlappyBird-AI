@@ -1,8 +1,8 @@
 import NeuralNetwork from "./neuralnetwork.js";
 
 export default class Bird {
-  constructor(main, sprite, frameCount, initialHeight) {
-    this.pos = main.createVector(100, initialHeight);
+  constructor(main, sprite, frameCount) {
+    this.pos = main.createVector(100, 100 + Math.random() * (main.height / 2));
     this.vel = main.createVector(0, 0);
     this.gravity = main.createVector(0, 0.3);
     this.dead = false;
@@ -12,7 +12,7 @@ export default class Bird {
     this.spriteIdx = 0;
     this.animSpeed = 0.3;
     this.animLen = frameCount;
-    this.brain = new NeuralNetwork(4, 2, 2);
+    this.brain = new NeuralNetwork(4, 10, 2);
     this.fitnessScore = 0;
     this.doScoring = true;
   }
@@ -47,7 +47,7 @@ export default class Bird {
   getDistances(pipePairPositionX, topPipePositionY, bottomPipePostitionY, birdPostitionY, gndPosY) {
     this.distToPipe = pipePairPositionX - (this.getPositionX() + this.w);
     this.distToTopPipe_y = birdPostitionY - topPipePositionY;
-    this.distToBottomPipe_y = bottomPipePostitionY - (birdPostitionY + this.h);
+    this.distToBottomPipe_y = bottomPipePostitionY - (this.pos.y + (this.h / 2 - 6));
     this.distToGround = gndPosY - (this.pos.y + (this.h / 2 - 6));
   }
 
@@ -60,7 +60,7 @@ export default class Bird {
   }
 
   think() {
-    this.inputs = [this.distToPipe, this.distToTopPipe_y, this.distToBottomPipe_y, this.distToGround];
+    this.inputs = [this.distToPipe, this.distToTopPipe_y, this.distToBottomPipe_y, this.vel.y];
     this.outputs = this.brain.feedForward(this.inputs);
     if (this.outputs[0] > this.outputs[1]) this.fly();
   }
@@ -79,8 +79,9 @@ export default class Bird {
   }
 
   updateFitness() {
+    this.fitnessScore += 1;
     if (this.distToPipe < -30 && this.doScoring) {
-      this.fitnessScore += 1; this.doScoring = false;
+      this.fitnessScore += 100; this.doScoring = false;
     } else if (this.distToPipe < -128) this.doScoring = true;
   }
 }
