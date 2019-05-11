@@ -10,6 +10,9 @@ const myGame = new p5((main) => {
   const sprite = [];
   const pipe = [];
   const pipeCount = 500;
+  let doScoring = true;
+  let globalScore = 0;
+  let bestGlobal = 0;
   let bird = [];
   let deadBirdIdx = [];
   let birdsDead = 0;
@@ -40,6 +43,8 @@ const myGame = new p5((main) => {
     //   bird[i] = new Bird(main, sprite, 4);
     // }
     bg = new Background(skyRes, gndRes, gndHeight, 2);
+    globalScore = 0;
+    doScoring = true;
     pipeIdx = 0;
     pipeInitX = main.width + 100;
     for (let i = 0; i < pipeCount; i += 1) {
@@ -100,16 +105,20 @@ const myGame = new p5((main) => {
     // }
   };
 
-  // const scoring = () => {
-  //   main.textSize(50);
-  //   main.text(score, main.width / 2, 100);
-  //   if (bird.dead) {
-  //     if (score > best) best = score;
-  //   }
-  //   if (bird.getDistanceTo('pipe') < -30 && doScoring) {
-  //     score += 1; doScoring = false;
-  //   } else if (bird.getDistanceTo('pipe') < -128) doScoring = true;
-  // };
+  const scoring = () => {
+    let pipePairPositionX = pipe[pipeIdx].getPipePairPositionX();
+    let dummyBirdX = 100 - (65 / 2);
+    let dummyDistToPipe = pipePairPositionX - (dummyBirdX + 65);
+    if (dummyDistToPipe < -128) pipeIdx += 1;
+    main.textSize(50);
+    main.text(globalScore, main.width / 2, 100);
+    if (birdsDead === POPULATION_SIZE) {
+      if (globalScore > bestGlobal) bestGlobal = globalScore;
+    }
+    if (dummyDistToPipe < -30 && doScoring) {
+      globalScore += 1; doScoring = false;
+    } else if (dummyDistToPipe < -128) doScoring = true;
+  };
 
   main.preload = () => {
     font = main.loadFont('fonts/BebasNeue.ttf');
@@ -147,6 +156,7 @@ const myGame = new p5((main) => {
       if (pipe[i].getPipePairPositionX() <= main.width) pipe[i].display(main, gndHeight);
       if (birdsDead !== POPULATION_SIZE) pipe[i].move();
     }
+    scoring();
     main.imageMode(main.CENTER);
     for (let i = 0; i < POPULATION_SIZE; i += 1) {
       if (!bird[i].dead) {
@@ -161,7 +171,6 @@ const myGame = new p5((main) => {
           bird[i].getPositionY(),
           (main.height - gndHeight),
         );
-        if (bird[i].getDistanceTo('pipe') < -128) pipeIdx += 1;
         bird[i].checkCollision(main, gndHeight);
         bird[i].updateFitness();
       } else if (bird[i].dead && birdsDead !== POPULATION_SIZE) {
@@ -172,10 +181,10 @@ const myGame = new p5((main) => {
         }
       }
     }
-
+    main.textSize(17);
     main.text('bird[0] output0: ', 30, 500);
     main.text(bird[0].outputs[0], 200, 500);
-
+    
     main.text('bird[0] output1: ', 30, 520);
     main.text(bird[0].outputs[1], 200, 520);
     if (birdsDead === POPULATION_SIZE) {
