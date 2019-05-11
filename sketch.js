@@ -4,11 +4,14 @@ import Background from './background.js';
 import Bird from './bird.js';
 
 const myGame = new p5((main) => {
+  const POPULATION_SIZE = 2;
   const gndHeight = 115;
   const sprite = [];
   const pipe = [];
   const pipeCount = 500;
-  let bird;
+  const bird = [];
+  const deadBirdIdx = [];
+  let birdsDead = 0;
   let pipeIdx = 0;
   let score = 0;
   let best = 0;
@@ -19,38 +22,45 @@ const myGame = new p5((main) => {
   let bg;
   let pipeInitX;
 
-  const debug = () => {
-    main.textSize(17);
-    main.fill(255);
-    main.stroke(0);
-    main.strokeWeight(3);
-    main.text('X Distance to Pipe: ', 30, 400);
-    main.text(bird.getDistanceTo('pipe'), 200, 400);
-
-    main.text('Y Distance to Top Pipe: ', 30, 420);
-    main.text(bird.getDistanceTo('topPipe_y'), 200, 420);
-
-    main.text('Y Distance to Bottom Pipe: ', 30, 440);
-    main.text(bird.getDistanceTo('bottomPipe_y'), 200, 440);
-
-    main.textSize(30);
-    if (bird.dead) {
-      main.text('YOU ARE DEAD!', 30, 500);
-      main.text('Best: ', 30, 550);
-      main.text(best, 150, 550);
+  const findElement = (arr, value) => {
+    for (let i = 0; i < arr.length; i += 1) {
+      if (arr[i] === value) return value;
     }
+    return undefined;
   };
 
-  const scoring = () => {
-    main.textSize(50);
-    main.text(score, main.width / 2, 100);
-    if (bird.dead) {
-      if (score > best) best = score;
-    }
-    if (bird.getDistanceTo('pipe') < -30 && doScoring) {
-      score += 1; doScoring = false;
-    } else if (bird.getDistanceTo('pipe') < -128) doScoring = true;
-  };
+  // const debug = () => {
+  //   main.textSize(17);
+  //   main.fill(255);
+  //   main.stroke(0);
+  //   main.strokeWeight(3);
+  //   main.text('X Distance to Pipe: ', 30, 400);
+  //   main.text(bird.getDistanceTo('pipe'), 200, 400);
+
+  //   main.text('Y Distance to Top Pipe: ', 30, 420);
+  //   main.text(bird.getDistanceTo('topPipe_y'), 200, 420);
+
+  //   main.text('Y Distance to Bottom Pipe: ', 30, 440);
+  //   main.text(bird.getDistanceTo('bottomPipe_y'), 200, 440);
+
+  //   main.textSize(30);
+  //   if (bird.dead) {
+  //     main.text('YOU ARE DEAD!', 30, 500);
+  //     main.text('Best: ', 30, 550);
+  //     main.text(best, 150, 550);
+  //   }
+  // };
+
+  // const scoring = () => {
+  //   main.textSize(50);
+  //   main.text(score, main.width / 2, 100);
+  //   if (bird.dead) {
+  //     if (score > best) best = score;
+  //   }
+  //   if (bird.getDistanceTo('pipe') < -30 && doScoring) {
+  //     score += 1; doScoring = false;
+  //   } else if (bird.getDistanceTo('pipe') < -128) doScoring = true;
+  // };
 
   main.preload = () => {
     font = main.loadFont('fonts/BebasNeue.ttf');
@@ -67,7 +77,9 @@ const myGame = new p5((main) => {
 
   main.setup = () => {
     main.createCanvas(360, 720);
-    bird = new Bird(main, sprite, 4);
+    for (let i = 0; i < POPULATION_SIZE; i += 1) {
+      bird[i] = new Bird(main, sprite, 4, Math.random() * (main.height / 2));
+    }
     bg = new Background(skyRes, gndRes, gndHeight, 2);
     main.textFont(font);
 
@@ -81,49 +93,68 @@ const myGame = new p5((main) => {
   main.draw = () => {
     main.imageMode(main.CORNER);
     bg.display(main);
-    if (!bird.dead) bg.scroll();
+    if (birdsDead !== POPULATION_SIZE) bg.scroll();
     for (let i = 0; i < pipeCount; i += 1) {
       if (pipe[i].getPipePairPositionX() <= main.width) pipe[i].display(main, gndHeight);
-      if (!bird.dead) pipe[i].move();
+      if (birdsDead !== POPULATION_SIZE) pipe[i].move();
     }
     main.imageMode(main.CENTER);
-    bird.display(main);
-    if (!bird.dead) bird.animate();
-    bird.move();
-    bird.getDistances(
-      pipe[pipeIdx].getPipePairPositionX(),
-      pipe[pipeIdx].getTopPipePositionY(),
-      pipe[pipeIdx].getBottomPipePositionY(main, gndHeight),
-      bird.getPositionY(),
-    );
-    if (bird.getDistanceTo('pipe') < -128) pipeIdx += 1;
-    bird.checkCollision(main, gndHeight);
-    scoring();
-    debug();
-  };
-
-  main.touchStarted = () => {
-    if (!bird.dead) bird.fly();
-    else if (bird.dead && bird.pos.y === (main.height - bg.gnd_h) - (bird.h / 2 - 6)) {
-      bird = new Bird(main, sprite, 4);
-      bg = new Background(skyRes, gndRes, gndHeight, 2);
-      score = 0;
-      doScoring = true;
-      pipeIdx = 0;
-      pipeInitX = main.width + 100;
-      for (let i = 0; i < pipeCount; i += 1) {
-        pipe[i] = new Pipe(main, gndHeight, pipeInitX, sprite[4], sprite[5], sprite[6]);
-        pipeInitX += 250;
+    for (let i = 0; i < POPULATION_SIZE; i += 1) {
+      if (!bird[i].dead) {
+        bird[i].display(main);
+        bird[i].animate();
+      }
+      bird[i].move();
+      bird[i].getDistances(
+        pipe[pipeIdx].getPipePairPositionX(),
+        pipe[pipeIdx].getTopPipePositionY(),
+        pipe[pipeIdx].getBottomPipePositionY(main, gndHeight),
+        bird[i].getPositionY(),
+      );
+      if (bird[i].getDistanceTo('pipe') < -128) pipeIdx += 1;
+      bird[i].checkCollision(main, gndHeight);
+      if (bird[i].dead && birdsDead !== POPULATION_SIZE) {
+        let found = findElement(deadBirdIdx, i);
+        if (found === undefined) {
+          deadBirdIdx.push(i);
+          birdsDead += 1;
+          // console.log(birdsDead);
+        }
       }
     }
-    return false;
+    // scoring();
+    // debug();
   };
 
+  // main.touchStarted = () => {
+  //   if (birdsDead !== POPULATION_SIZE) bird.fly();
+  //   else if (bird.dead && bird.pos.y === (main.height - bg.gnd_h) - (bird.h / 2 - 6)) {
+  //     bird = new Bird(main, sprite, 4);
+  //     bg = new Background(skyRes, gndRes, gndHeight, 2);
+  //     score = 0;
+  //     doScoring = true;
+  //     pipeIdx = 0;
+  //     pipeInitX = main.width + 100;
+  //     for (let i = 0; i < pipeCount; i += 1) {
+  //       pipe[i] = new Pipe(main, gndHeight, pipeInitX, sprite[4], sprite[5], sprite[6]);
+  //       pipeInitX += 250;
+  //     }
+  //   }
+  //   return false;
+  // };
+
   main.keyPressed = () => {
-    if (!bird.dead && main.key === ' ') bird.fly();
-    else if (bird.dead) {
+    if (birdsDead !== POPULATION_SIZE && main.key === ' ') {
+      for (let i = 0; i < POPULATION_SIZE; i += 1) {
+        if (!bird[i].dead) bird[i].fly();
+      }
+    } else if (birdsDead === POPULATION_SIZE) {
       if (main.key === 'r') {
-        bird = new Bird(main, sprite, 4);
+        for (let i = 0; i <= deadBirdIdx.length; i += 1) deadBirdIdx.pop();
+        birdsDead = 0;
+        for (let i = 0; i < POPULATION_SIZE; i += 1) {
+          bird[i] = new Bird(main, sprite, 4, Math.random() * (main.height / 2));
+        }
         bg = new Background(skyRes, gndRes, gndHeight, 2);
         score = 0;
         doScoring = true;
