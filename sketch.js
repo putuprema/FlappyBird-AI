@@ -110,6 +110,7 @@ const myGame = new p5((main) => {
         pipe[pipeIdx].getTopPipePositionY(),
         pipe[pipeIdx].getBottomPipePositionY(main, gndHeight),
         bird[i].getPositionY(),
+        (main.height - gndHeight),
       );
       if (bird[i].getDistanceTo('pipe') < -128) pipeIdx += 1;
       bird[i].checkCollision(main, gndHeight);

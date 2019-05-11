@@ -39,16 +39,18 @@ export default class Bird {
     return this.pos.y - (this.h / 2);
   }
 
-  getDistances(pipePairPositionX, topPipePositionY, bottomPipePostitionY, birdPostitionY) {
+  getDistances(pipePairPositionX, topPipePositionY, bottomPipePostitionY, birdPostitionY, gndPosY) {
     this.distToPipe = pipePairPositionX - (this.getPositionX() + this.w);
     this.distToTopPipe_y = birdPostitionY - topPipePositionY;
     this.distToBottomPipe_y = bottomPipePostitionY - (birdPostitionY + this.h);
+    this.distToGround = gndPosY - (this.pos.y + (this.h / 2 - 6));
   }
 
   getDistanceTo(toWhich) {
     if (toWhich === 'pipe') return this.distToPipe;
     if (toWhich === 'topPipe_y') return this.distToTopPipe_y;
     if (toWhich === 'bottomPipe_y') return this.distToBottomPipe_y;
+    if (toWhich === 'ground') return this.distToGround;
     return 0;
   }
 
