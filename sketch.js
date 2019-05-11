@@ -107,6 +107,7 @@ const myGame = new p5((main) => {
         bird[i].display(main);
         bird[i].animate();
       }
+      bird[i].think();
       bird[i].move();
       bird[i].getDistances(
         pipe[pipeIdx].getPipePairPositionX(),

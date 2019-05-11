@@ -1,3 +1,5 @@
+import NeuralNetwork from "./neuralnetwork.js";
+
 export default class Bird {
   constructor(main, sprite, frameCount, initialHeight) {
     this.pos = main.createVector(100, initialHeight);
@@ -10,6 +12,7 @@ export default class Bird {
     this.spriteIdx = 0;
     this.animSpeed = 0.3;
     this.animLen = frameCount;
+    this.brain = new NeuralNetwork(4, 2, 2);
   }
 
   fly() {
@@ -52,6 +55,12 @@ export default class Bird {
     if (toWhich === 'bottomPipe_y') return this.distToBottomPipe_y;
     if (toWhich === 'ground') return this.distToGround;
     return 0;
+  }
+
+  think() {
+    this.inputs = [this.distToPipe, this.distToTopPipe_y, this.distToBottomPipe_y, this.distToGround];
+    this.outputs = this.brain.feedForward(this.inputs);
+    if (this.outputs[0] > this.outputs[1]) this.fly();
   }
 
   checkCollision(main, gndHeight) {
