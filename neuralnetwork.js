@@ -53,4 +53,18 @@ export default class NeuralNetwork {
     console.table(this.weights_ho.matrix);
     console.table(hiddenErrors.matrix);
   }
+
+  mutate(mutationRate) {
+    this.rand = Math.random();
+    this.whichMutate = 1 + (Math.floor(Math.random * 4));
+    if (this.rand < mutationRate) {
+      switch (this.whichMutate) {
+        case 1: this.weights_ih.randomize(); break;
+        case 2: this.weights_ho.randomize(); break;
+        case 3: this.hiddenBias.randomize(); break;
+        case 4: this.outputBias.randomize(); break;
+        default: break;
+      }
+    }
+  }
 }
