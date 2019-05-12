@@ -153,7 +153,6 @@ const myGame = new p5((main) => {
       if (birdsDead !== POPULATION_SIZE) pipe[i].move();
     }
     scoring();
-    debug();
     main.imageMode(main.CENTER);
     for (let i = POPULATION_SIZE - 1; i >= 0; i -= 1) {
       if (!bird[i].dead) {
@@ -178,6 +177,7 @@ const myGame = new p5((main) => {
         }
       }
     }
+    debug();
     if (birdsDead === POPULATION_SIZE) {
       findBestBird();
       bird = naturalSelection();
