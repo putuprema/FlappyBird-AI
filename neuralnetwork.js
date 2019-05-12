@@ -6,19 +6,30 @@ function sigmoid(x) {
 }
 
 export default class NeuralNetwork {
-  constructor(inputNodes, hiddenNodes, outputNodes) {
-    this.inputNodes = inputNodes;
-    this.hiddenNodes = hiddenNodes;
-    this.outputNodes = outputNodes;
+  constructor(i, h, o) {
+    if (i instanceof NeuralNetwork) {
+      this.inputNodes = i.inputNodes;
+      this.hiddenNodes = i.hiddenNodes;
+      this.outputNodes = i.outputNodes;
 
-    this.weights_ih = new Matrix(this.hiddenNodes, this.inputNodes); // weights between input and hidden layer
-    this.weights_ho = new Matrix(this.outputNodes, this.hiddenNodes); // weights between hidden and output layer
-    this.hiddenBias = new Matrix(this.hiddenNodes, 1);
-    this.outputBias = new Matrix(this.outputNodes, 1);
-    this.weights_ih.randomize();
-    this.weights_ho.randomize();
-    this.hiddenBias.randomize();
-    this.outputBias.randomize();
+      this.weights_ih = i.weights_ih.copy();
+      this.weights_ho = i.weights_ho.copy();
+      this.hiddenBias = i.hiddenBias.copy();
+      this.outputBias = i.outputBias.copy();
+    } else {
+      this.inputNodes = i;
+      this.hiddenNodes = h;
+      this.outputNodes = o;
+
+      this.weights_ih = new Matrix(this.hiddenNodes, this.inputNodes); // weights between input and hidden layer
+      this.weights_ho = new Matrix(this.outputNodes, this.hiddenNodes); // weights between hidden and output layer
+      this.hiddenBias = new Matrix(this.hiddenNodes, 1);
+      this.outputBias = new Matrix(this.outputNodes, 1);
+      this.weights_ih.randomize();
+      this.weights_ho.randomize();
+      this.hiddenBias.randomize();
+      this.outputBias.randomize();
+    }
   }
 
   feedForward(inputArray) {
@@ -54,17 +65,35 @@ export default class NeuralNetwork {
     console.table(hiddenErrors.matrix);
   }
 
+  copy() {
+    return new NeuralNetwork(this);
+  }
+
   mutate(mutationRate) {
-    this.rand = Math.random();
-    this.whichMutate = 1 + (Math.floor(Math.random * 4));
-    if (this.rand < mutationRate) {
-      switch (this.whichMutate) {
-        case 1: this.weights_ih.randomize(); break;
-        case 2: this.weights_ho.randomize(); break;
-        case 3: this.hiddenBias.randomize(); break;
-        case 4: this.outputBias.randomize(); break;
-        default: break;
-      }
-    }
+    // this.rand = Math.random();
+    // this.whichMutate = 1 + (Math.floor(Math.random * 4));
+    // if (this.rand < mutationRate) {
+    //   // switch (this.whichMutate) {
+    //   //   case 1: this.weights_ih.randomize(); break;
+    //   //   case 2: this.weights_ho.randomize(); break;
+    //   //   case 3: this.hiddenBias.randomize(); break;
+    //   //   case 4: this.outputBias.randomize(); break;
+    //   //   default: break;
+    //   // }
+    //   this.weights_ih.randomize();
+    //   this.weights_ho.randomize();
+    //   this.hiddenBias.randomize();
+    //   this.outputBias.randomize();
+    // }
+    const mutate = (x) => {
+      const rand = Math.random();
+      if (rand < mutationRate) return Math.random() * 2 - 1;
+      return x;
+    };
+
+    this.weights_ih.apply(mutate);
+    this.weights_ho.apply(mutate);
+    this.hiddenBias.apply(mutate);
+    this.outputBias.apply(mutate);
   }
 }
