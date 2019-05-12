@@ -21,6 +21,17 @@ const myGame = new p5((main) => {
   let font;
   let bg;
   let pipeInitX;
+  let bestBirdIdx;
+
+  const findBestBird = () => {
+    let maxScore = -1;
+    for (let i = 0; i < POPULATION_SIZE; i += 1) {
+      if (bird[i].fitnessScore > maxScore) {
+        maxScore = bird[i].fitnessScore;
+        bestBirdIdx = i;
+    }
+
+  }
 
   const findElement = (arr, value) => {
     for (let i = 0; i < arr.length; i += 1) {
@@ -118,6 +129,7 @@ const myGame = new p5((main) => {
       );
       if (bird[i].getDistanceTo('pipe') < -128) pipeIdx += 1;
       bird[i].checkCollision(main, gndHeight);
+      bird[i].updateFitness();
       if (bird[i].dead && birdsDead !== POPULATION_SIZE) {
         let found = findElement(deadBirdIdx, i);
         if (found === undefined) {
@@ -127,6 +139,7 @@ const myGame = new p5((main) => {
         }
       }
     }
+    if (birdsDead === POPULATION_SIZE) findBestBird();
     // scoring();
     debug();
   };
