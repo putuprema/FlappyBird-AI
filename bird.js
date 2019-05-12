@@ -79,8 +79,8 @@ export default class Bird {
   }
 
   updateFitness() {
-    if (this.distToBottomPipe_y >= 10 && this.distToTopPipe_y >= 20) this.fitnessScore += 100;
-    else this.fitnessScore -= Math.abs(this.distToBottomPipe_y);
+    if (this.distToBottomPipe_y >= 8 && this.distToTopPipe_y >= 20) this.fitnessScore += 100;
+    else this.fitnessScore -= Math.abs(this.distToTopPipe_y);
     if (this.distToPipe < -30 && this.doScoring) {
       this.fitnessScore += 1000; this.doScoring = false;
     } else if (this.distToPipe < -131) this.doScoring = true;
