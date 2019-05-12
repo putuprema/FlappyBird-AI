@@ -128,4 +128,14 @@ export default class Matrix {
       }
     }
   }
+
+  copy() {
+    const neww = new Matrix(this.rows, this.columns);
+    for (let i = 0; i < neww.rows; i += 1) {
+      for (let j = 0; j < neww.columns; j += 1) {
+        neww.matrix[i][j] = this.matrix[i][j];
+      }
+    }
+    return neww;
+  }
 }
