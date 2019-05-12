@@ -22,7 +22,7 @@ const myGame = new p5((main) => {
   let font;
   let bg;
   let pipeInitX;
-  let bestBirdIdx;
+  let bestBirdIdx = 0;
   let generation = 1;
 
   const naturalSelection = () => {
