@@ -78,14 +78,25 @@ const myGame = new p5((main) => {
     main.textAlign(main.LEFT);
     main.text('Generation:        ' + generation, 30, 50);
     main.text('Birds Alive:        ' + (POPULATION_SIZE - birdsDead), 30, 70);
-    // main.text('X Distance to Pipe: ', 30, 520);
-    // main.text(bird[0].getDistanceTo('pipe'), 200, 520);
-    // main.text('Y Distance to Top Pipe: ', 30, 540);
-    // main.text(bird[0].getDistanceTo('topPipe_y'), 200, 540);
-    // main.text('Y Distance to Bottom Pipe: ', 30, 560);
-    // main.text(bird[0].getDistanceTo('bottomPipe_y'), 200, 560);
-    // main.text('Y Distance to Ground: ', 30, 580);
-    // main.text(bird[0].getDistanceTo('ground'), 200, 580);
+    for (let i = 0; i < POPULATION_SIZE; i += 1) {
+      if (!bird[i].dead) {
+        main.text('Bird ' + i + ' stats:', 30, 460);
+        main.text('Fitness Score: ', 30, 480);
+        main.text(Math.floor(bird[i].fitnessScore), 200, 480);
+        main.text('X Distance to Pipe: ', 30, 500);
+        main.text(Math.floor(bird[i].getDistanceTo('pipe')), 200, 500);
+        main.text('Y Distance to Top Pipe: ', 30, 520);
+        main.text(Math.floor(bird[i].getDistanceTo('topPipe_y')), 200, 520);
+        main.text('Y Distance to Bottom Pipe: ', 30, 540);
+        main.text(Math.floor(bird[i].getDistanceTo('bottomPipe_y')), 200, 540);
+        main.text('Y Distance to Ground: ', 30, 560);
+        main.text(Math.floor(bird[i].getDistanceTo('ground')), 200, 560);
+        main.textSize(25);
+        main.text('Brain Decision: ', 30, 590);
+        if (bird[i].outputs[0] >= 0.5) main.text('FLY !!!', 200, 590);
+        break;
+      }
+    }
   };
 
   const scoring = () => {
