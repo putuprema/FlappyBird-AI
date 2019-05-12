@@ -12,7 +12,7 @@ export default class Bird {
     this.spriteIdx = 0;
     this.animSpeed = 0.3;
     this.animLen = frameCount;
-    this.brain = new NeuralNetwork(4, 10, 2);
+    this.brain = new NeuralNetwork(4, 2, 1);
     this.fitnessScore = 0;
     this.doScoring = true;
   }
@@ -62,7 +62,7 @@ export default class Bird {
   think() {
     this.inputs = [this.distToPipe, this.distToTopPipe_y, this.distToBottomPipe_y, this.vel.y];
     this.outputs = this.brain.feedForward(this.inputs);
-    if (this.outputs[0] > this.outputs[1]) this.fly();
+    if (this.outputs[0] >= 0.5) this.fly();
   }
 
   checkCollision(main, gndHeight) {
