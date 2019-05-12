@@ -70,21 +70,6 @@ export default class NeuralNetwork {
   }
 
   mutate(mutationRate) {
-    // this.rand = Math.random();
-    // this.whichMutate = 1 + (Math.floor(Math.random * 4));
-    // if (this.rand < mutationRate) {
-    //   // switch (this.whichMutate) {
-    //   //   case 1: this.weights_ih.randomize(); break;
-    //   //   case 2: this.weights_ho.randomize(); break;
-    //   //   case 3: this.hiddenBias.randomize(); break;
-    //   //   case 4: this.outputBias.randomize(); break;
-    //   //   default: break;
-    //   // }
-    //   this.weights_ih.randomize();
-    //   this.weights_ho.randomize();
-    //   this.hiddenBias.randomize();
-    //   this.outputBias.randomize();
-    // }
     const mutate = (x) => {
       const rand = Math.random();
       if (rand < mutationRate) return Math.random() * 2 - 1;
