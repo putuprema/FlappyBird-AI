@@ -90,9 +90,13 @@ const myGame = new p5((main) => {
         main.text('Distance to Top Pipe ', 158, 491);
         main.text('Distance to Bottom Pipe ', 158, 536);
         main.text('Vertical Speed ', 158, 581);
-        // main.text('Brain Decision: ', 30, 590);
-        // if (bird[i].outputs[0] >= 0.5) main.text('FLY !!!', 200, 590);
+        main.textSize(35);
+        if (bird[i].outputs[0] >= 0.5) main.text('FLY !!', 350, 585);
         bird[i].brain.visualize(main, 180, 440, 150, 50);
+        main.fill(255);
+        main.strokeWeight(1);
+        main.rect(325, 465, 8, 70);
+        main.triangle(340, 530, 330, 550, 320, 530);
         break;
       }
     }
