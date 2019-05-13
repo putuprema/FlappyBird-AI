@@ -83,15 +83,17 @@ export default class NeuralNetwork {
   }
 
   visualize(main, startX, startY, canvasWidth, canvasLength) {
-    let inputPosX = startX;
+    const inputPosX = startX;
     let nodePosY = startY;
-    let hiddenPosX = startX + (canvasWidth / 2);
-    let outputPosX = startX + canvasWidth;
+    const hiddenPosX = startX + (canvasWidth / 2);
+    const outputPosX = startX + canvasWidth;
 
-    class InputNodes {
-      constructor(posX, posY) {
+    class Circle {
+      constructor(whichLayer, label, posX, posY) {
         this.posX = posX;
         this.posY = posY;
+        this.label = label;
+        this.whichLayer = whichLayer;
       }
 
       display() {
@@ -99,34 +101,10 @@ export default class NeuralNetwork {
         main.stroke(0);
         main.strokeWeight(1);
         main.ellipse(this.posX, this.posY, 30, 30);
-      }
-    }
-
-    class HiddenNodes {
-      constructor(posX, posY) {
-        this.posX = posX;
-        this.posY = posY;
-      }
-
-      display() {
-        main.fill('white');
-        main.stroke(0);
-        main.strokeWeight(1);
-        main.ellipse(this.posX, this.posY, 30, 30);
-      }
-    }
-
-    class OutputNodes {
-      constructor(posX, posY) {
-        this.posX = posX;
-        this.posY = posY;
-      }
-
-      display() {
-        main.fill('white');
-        main.stroke(0);
-        main.strokeWeight(1);
-        main.ellipse(this.posX, this.posY, 30, 30);
+        main.fill('black');
+        main.strokeWeight(0);
+        if (this.whichLayer === 'input') main.text(Math.floor(this.label), this.posX, this.posY + 5);
+        else main.text(main.nf(this.label, 1, 1), this.posX, this.posY + 5);
       }
     }
 
@@ -135,17 +113,17 @@ export default class NeuralNetwork {
     let outputNodes = [];
 
     for (let i = 0; i < this.inputNodes; i += 1) {
-      inputNodes[i] = new InputNodes(inputPosX, nodePosY);
+      inputNodes.push(new Circle('input', this.input.toArray()[i], inputPosX, nodePosY));
       nodePosY += 45;
     }
     nodePosY = startY;
     for (let i = 0; i < this.hiddenNodes; i += 1) {
-      hiddenNodes[i] = new HiddenNodes(hiddenPosX, nodePosY);
+      hiddenNodes.push(new Circle('hidden', this.hidden.toArray()[i], hiddenPosX, nodePosY));
       nodePosY += 45;
     }
     nodePosY = startY;
     for (let i = 0; i < this.outputNodes; i += 1) {
-      outputNodes[i] = new OutputNodes(outputPosX, nodePosY);
+      outputNodes.push(new Circle('output', this.output.toArray()[i], outputPosX, nodePosY));
       nodePosY += 45;
     }
 
@@ -170,24 +148,17 @@ export default class NeuralNetwork {
 
     for (let i = 0; i < this.inputNodes; i += 1) {
       inputNodes[i].display();
-      main.fill('black');
-      main.strokeWeight(0);
-      main.text(Math.floor(this.input.toArray()[i]), inputNodes[i].posX, inputNodes[i].posY + 5);
     }
-    nodePosY = startY;
     for (let i = 0; i < this.hiddenNodes; i += 1) {
       hiddenNodes[i].display();
-      main.fill('black');
-      main.strokeWeight(0);
-      main.text(main.nf(this.hidden.toArray()[i], 1, 1), hiddenNodes[i].posX, hiddenNodes[i].posY + 5);
     }
-    nodePosY = startY;
     for (let i = 0; i < this.outputNodes; i += 1) {
       if (this.output.toArray()[i] >= 0.5) { main.fill('white'); main.ellipse(outputNodes[i].posX, outputNodes[i].posY, 40, 40); }
       outputNodes[i].display();
-      main.fill('black');
-      main.strokeWeight(0);
-      main.text(main.nf(this.output.toArray()[i], 1, 1), outputNodes[i].posX, outputNodes[i].posY + 5);
     }
+
+    inputNodes = [];
+    hiddenNodes = [];
+    outputNodes = [];
   }
 }
