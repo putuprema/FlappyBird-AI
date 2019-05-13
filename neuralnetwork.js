@@ -82,7 +82,7 @@ export default class NeuralNetwork {
     this.outputBias.apply(mutate);
   }
 
-  visualize(main, startX, startY, canvasWidth, canvasLength) {
+  visualize(main, startX, startY, canvasWidth) {
     const inputPosX = startX;
     let nodePosY = startY;
     const hiddenPosX = startX + (canvasWidth / 2);

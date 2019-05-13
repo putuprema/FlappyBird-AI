@@ -92,7 +92,7 @@ const myGame = new p5((main) => {
         main.text('Vertical Speed ', 158, 581);
         main.textSize(35);
         if (bird[i].outputs[0] >= 0.5) main.text('FLY !!', 350, 585);
-        bird[i].brain.visualize(main, 180, 440, 150, 50);
+        bird[i].brain.visualize(main, 180, 440, 150);
         main.fill(255);
         main.strokeWeight(1);
         main.rect(325, 465, 8, 70);
