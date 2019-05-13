@@ -40,9 +40,6 @@ const myGame = new p5((main) => {
   const reset = () => {
     deadBirdIdx = [];
     birdsDead = 0;
-    // for (let i = 0; i < POPULATION_SIZE; i += 1) {
-    //   bird[i] = new Bird(main, sprite, 4);
-    // }
     bg = new Background(skyRes, gndRes, gndHeight, 2);
     globalScore = 0;
     doScoring = true;
