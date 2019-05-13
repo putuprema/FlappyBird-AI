@@ -76,25 +76,23 @@ const myGame = new p5((main) => {
   const debug = () => {
     main.textSize(17);
     main.textAlign(main.LEFT);
-    main.text('Generation:        ' + generation, 30, 50);
-    main.text('Birds Alive:        ' + (POPULATION_SIZE - birdsDead), 30, 70);
+    main.text('Generation:        ' + generation, 20, 50);
+    main.text('Birds Alive:        ' + (POPULATION_SIZE - birdsDead) + ' / ' + POPULATION_SIZE, 20, 70);
     for (let i = 0; i < POPULATION_SIZE; i += 1) {
       if (!bird[i].dead) {
-        main.text('Bird ' + i + ' stats:', 30, 460);
-        main.text('Fitness Score: ', 30, 480);
-        main.text(Math.floor(bird[i].fitnessScore), 200, 480);
-        main.text('X Distance to Pipe: ', 30, 500);
-        main.text(Math.floor(bird[i].getDistanceTo('pipe')), 200, 500);
-        main.text('Y Distance to Top Pipe: ', 30, 520);
-        main.text(Math.floor(bird[i].getDistanceTo('topPipe_y')), 200, 520);
-        main.text('Y Distance to Bottom Pipe: ', 30, 540);
-        main.text(Math.floor(bird[i].getDistanceTo('bottomPipe_y')), 200, 540);
-        main.text('Y Distance to Ground: ', 30, 560);
-        main.text(Math.floor(bird[i].getDistanceTo('ground')), 200, 560);
         main.textSize(25);
-        main.text('Brain Decision: ', 30, 590);
-        if (bird[i].outputs[0] >= 0.5) main.text('FLY !!!', 200, 590);
-        bird[i].brain.visualize(main, 173, 267, 150, 50);
+        main.text('Bird ' + i + '\'s neural network', 20, 400);
+        // main.text('Fitness Score: ', 20, 400);
+        // main.text(Math.floor(bird[i].fitnessScore), 200, 400);
+        main.textSize(17);
+        main.textAlign(main.RIGHT);
+        main.text('X-Distance to Pipe ', 158, 446);
+        main.text('Distance to Top Pipe ', 158, 491);
+        main.text('Distance to Bottom Pipe ', 158, 536);
+        main.text('Vertical Speed ', 158, 581);
+        // main.text('Brain Decision: ', 30, 590);
+        // if (bird[i].outputs[0] >= 0.5) main.text('FLY !!!', 200, 590);
+        bird[i].brain.visualize(main, 180, 440, 150, 50);
         break;
       }
     }

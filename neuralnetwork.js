@@ -33,17 +33,17 @@ export default class NeuralNetwork {
   }
 
   feedForward(inputArray) {
-    let input = Matrix.fromArray(inputArray);
+    this.input = Matrix.fromArray(inputArray);
 
-    let hidden = Matrix.multiply(this.weights_ih, input);
-    hidden.add(this.hiddenBias);
-    hidden.apply(sigmoid); // apply activation function to the hidden layer
+    this.hidden = Matrix.multiply(this.weights_ih, this.input);
+    this.hidden.add(this.hiddenBias);
+    this.hidden.apply(sigmoid); // apply activation function to the hidden layer
 
-    let output = Matrix.multiply(this.weights_ho, hidden);
-    output.add(this.outputBias);
-    output.apply(sigmoid); // apply activation function to the output layer
+    this.output = Matrix.multiply(this.weights_ho, this.hidden);
+    this.output.add(this.outputBias);
+    this.output.apply(sigmoid); // apply activation function to the output layer
 
-    return output.toArray(); // send the result back to user
+    return this.output.toArray(); // send the result back to user
   }
 
   train(inputs, targets) {
@@ -98,7 +98,7 @@ export default class NeuralNetwork {
         main.fill('white');
         main.stroke(0);
         main.strokeWeight(1);
-        main.ellipse(this.posX, this.posY, 25, 25);
+        main.ellipse(this.posX, this.posY, 30, 30);
       }
     }
 
@@ -112,7 +112,7 @@ export default class NeuralNetwork {
         main.fill('white');
         main.stroke(0);
         main.strokeWeight(1);
-        main.ellipse(this.posX, this.posY, 25, 25);
+        main.ellipse(this.posX, this.posY, 30, 30);
       }
     }
 
@@ -126,7 +126,7 @@ export default class NeuralNetwork {
         main.fill('white');
         main.stroke(0);
         main.strokeWeight(1);
-        main.ellipse(this.posX, this.posY, 25, 25);
+        main.ellipse(this.posX, this.posY, 30, 30);
       }
     }
 
@@ -166,27 +166,28 @@ export default class NeuralNetwork {
     }
 
     main.textAlign(main.CENTER);
-    main.textSize(12);
+    main.textSize(15);
 
     for (let i = 0; i < this.inputNodes; i += 1) {
       inputNodes[i].display();
       main.fill('black');
       main.strokeWeight(0);
-      main.text(i, inputNodes[i].posX, inputNodes[i].posY + 4);
+      main.text(Math.floor(this.input.toArray()[i]), inputNodes[i].posX, inputNodes[i].posY + 5);
     }
     nodePosY = startY;
     for (let i = 0; i < this.hiddenNodes; i += 1) {
       hiddenNodes[i].display();
       main.fill('black');
       main.strokeWeight(0);
-      main.text(i, hiddenNodes[i].posX, hiddenNodes[i].posY + 4);
+      main.text(main.nf(this.hidden.toArray()[i], 1, 1), hiddenNodes[i].posX, hiddenNodes[i].posY + 5);
     }
     nodePosY = startY;
     for (let i = 0; i < this.outputNodes; i += 1) {
+      if (this.output.toArray()[i] >= 0.5) { main.fill('white'); main.ellipse(outputNodes[i].posX, outputNodes[i].posY, 40, 40); }
       outputNodes[i].display();
       main.fill('black');
       main.strokeWeight(0);
-      main.text(i, outputNodes[i].posX, outputNodes[i].posY + 4);
+      main.text(main.nf(this.output.toArray()[i], 1, 1), outputNodes[i].posX, outputNodes[i].posY + 5);
     }
   }
 }
