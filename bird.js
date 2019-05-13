@@ -12,7 +12,7 @@ export default class Bird {
     this.spriteIdx = 0;
     this.animSpeed = 0.3;
     this.animLen = frameCount;
-    this.brain = new NeuralNetwork(4, 2, 1);
+    this.brain = new NeuralNetwork(4, 3, 1);
     this.fitnessScore = 0;
     this.doScoring = true;
   }
