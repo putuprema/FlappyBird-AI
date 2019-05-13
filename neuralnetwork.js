@@ -81,4 +81,112 @@ export default class NeuralNetwork {
     this.hiddenBias.apply(mutate);
     this.outputBias.apply(mutate);
   }
+
+  visualize(main, startX, startY, canvasWidth, canvasLength) {
+    let inputPosX = startX;
+    let nodePosY = startY;
+    let hiddenPosX = startX + (canvasWidth / 2);
+    let outputPosX = startX + canvasWidth;
+
+    class InputNodes {
+      constructor(posX, posY) {
+        this.posX = posX;
+        this.posY = posY;
+      }
+
+      display() {
+        main.fill('white');
+        main.stroke(0);
+        main.strokeWeight(1);
+        main.ellipse(this.posX, this.posY, 25, 25);
+      }
+    }
+
+    class HiddenNodes {
+      constructor(posX, posY) {
+        this.posX = posX;
+        this.posY = posY;
+      }
+
+      display() {
+        main.fill('white');
+        main.stroke(0);
+        main.strokeWeight(1);
+        main.ellipse(this.posX, this.posY, 25, 25);
+      }
+    }
+
+    class OutputNodes {
+      constructor(posX, posY) {
+        this.posX = posX;
+        this.posY = posY;
+      }
+
+      display() {
+        main.fill('white');
+        main.stroke(0);
+        main.strokeWeight(1);
+        main.ellipse(this.posX, this.posY, 25, 25);
+      }
+    }
+
+    let inputNodes = [];
+    let hiddenNodes = [];
+    let outputNodes = [];
+
+    for (let i = 0; i < this.inputNodes; i += 1) {
+      inputNodes[i] = new InputNodes(inputPosX, nodePosY);
+      nodePosY += 45;
+    }
+    nodePosY = startY;
+    for (let i = 0; i < this.hiddenNodes; i += 1) {
+      hiddenNodes[i] = new HiddenNodes(hiddenPosX, nodePosY);
+      nodePosY += 45;
+    }
+    nodePosY = startY;
+    for (let i = 0; i < this.outputNodes; i += 1) {
+      outputNodes[i] = new InputNodes(outputPosX, nodePosY);
+      nodePosY += 45;
+    }
+
+    main.stroke('orange');
+
+    for (let i = 0; i < this.weights_ih.rows; i += 1) {
+      for (let j = 0; j < this.weights_ih.columns; j += 1) {
+        main.strokeWeight(main.map(this.weights_ih.matrix[i][j], -1, 1, 0.5, 3.5));
+        main.line(inputNodes[j].posX, inputNodes[j].posY, hiddenNodes[i].posX, hiddenNodes[i].posY);
+      }
+    }
+
+    for (let i = 0; i < this.weights_ho.rows; i += 1) {
+      for (let j = 0; j < this.weights_ho.columns; j += 1) {
+        main.strokeWeight(main.map(this.weights_ho.matrix[i][j], -1, 1, 0.5, 3.5));
+        main.line(hiddenNodes[j].posX, hiddenNodes[j].posY, outputNodes[i].posX, outputNodes[i].posY);
+      }
+    }
+
+    main.textAlign(main.CENTER);
+    main.textSize(12);
+
+    for (let i = 0; i < this.inputNodes; i += 1) {
+      inputNodes[i].display();
+      main.fill('black');
+      main.strokeWeight(0);
+      main.text(i, inputNodes[i].posX, inputNodes[i].posY + 4);
+    }
+    nodePosY = startY;
+    for (let i = 0; i < this.hiddenNodes; i += 1) {
+      hiddenNodes[i].display();
+      main.fill('black');
+      main.strokeWeight(0);
+      main.text(i, hiddenNodes[i].posX, hiddenNodes[i].posY + 4);
+    }
+    nodePosY = startY;
+    for (let i = 0; i < this.outputNodes; i += 1) {
+      outputNodes[i].display();
+      main.fill('black');
+      main.strokeWeight(0);
+      main.text(i, outputNodes[i].posX, outputNodes[i].posY + 4);
+    }
+  }
 }

@@ -94,6 +94,7 @@ const myGame = new p5((main) => {
         main.textSize(25);
         main.text('Brain Decision: ', 30, 590);
         if (bird[i].outputs[0] >= 0.5) main.text('FLY !!!', 200, 590);
+        bird[i].brain.visualize(main, 173, 267, 150, 50);
         break;
       }
     }
