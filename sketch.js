@@ -26,7 +26,7 @@ const myGame = new p5((main) => {
   let generation = 1;
 
   const naturalSelection = () => {
-    let newGen = [];
+    const newGen = [];
     newGen[0] = new Bird(main, sprite, 4);
     newGen[0].brain = bird[bestBirdIdx].brain.copy();
     for (let i = 1; i < POPULATION_SIZE; i += 1) {

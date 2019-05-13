@@ -1,4 +1,4 @@
-import NeuralNetwork from "./neuralnetwork.js";
+import NeuralNetwork from './neuralnetwork.js';
 
 export default class Bird {
   constructor(main, sprite, frameCount) {

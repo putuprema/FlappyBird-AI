@@ -46,12 +46,12 @@ export default class NeuralNetwork {
     return this.output.toArray(); // send the result back to user
   }
 
-  train(inputs, targets) {
-    let outputs = this.feedForward(inputs);
+  train(_inputs, _targets) {
+    let outputs = this.feedForward(_inputs);
     outputs = Matrix.fromArray(outputs);
-    targets = Matrix.fromArray(targets);
-    let outputErrors = Matrix.subtract(targets, outputs);
-    let hiddenErrors = Matrix.multiply(Matrix.transpose(this.weights_ho), outputErrors);
+    const targets = Matrix.fromArray(_targets);
+    const outputErrors = Matrix.subtract(targets, outputs);
+    const hiddenErrors = Matrix.multiply(Matrix.transpose(this.weights_ho), outputErrors);
     /*
     * Formula for calculating hidden errors (assume 2 hidden nodes and 2 output nodes)
     * hiddenErrors     = weights between hidden & output (transposed) * outputErrors

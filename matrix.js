@@ -22,7 +22,7 @@ export default class Matrix {
   }
 
   toArray() { // Flat the matrix into one dimensional array (going through columns first)
-    let arr = [];
+    const arr = [];
     for (let i = 0; i < this.rows; i += 1) {
       for (let j = 0; j < this.columns; j += 1) {
         arr.push(this.matrix[i][j]);
