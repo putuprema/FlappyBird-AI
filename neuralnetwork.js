@@ -145,7 +145,7 @@ export default class NeuralNetwork {
     }
     nodePosY = startY;
     for (let i = 0; i < this.outputNodes; i += 1) {
-      outputNodes[i] = new InputNodes(outputPosX, nodePosY);
+      outputNodes[i] = new OutputNodes(outputPosX, nodePosY);
       nodePosY += 45;
     }
 
