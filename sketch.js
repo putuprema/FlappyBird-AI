@@ -8,6 +8,7 @@ const myGame = new p5((main) => {
   const POPULATION_SIZE = 50;
   const gndHeight = 115;
   const sprite = [];
+  const bestBirdSprite = [];
   const pipe = [];
   const pipeCount = 5000;
   let doScoring = true;
@@ -27,10 +28,10 @@ const myGame = new p5((main) => {
 
   const naturalSelection = () => {
     const newGen = [];
-    newGen[0] = new Bird(main, sprite, 4);
+    newGen[0] = new Bird(main, bestBirdSprite, 4, true);
     newGen[0].brain = bird[bestBirdIdx].brain.copy();
     for (let i = 1; i < POPULATION_SIZE; i += 1) {
-      newGen[i] = new Bird(main, sprite, 4);
+      newGen[i] = new Bird(main, sprite, 4, false);
       newGen[i].brain = bird[bestBirdIdx].brain.copy();
       newGen[i].brain.mutate(MUTATION_RATE);
     }
@@ -128,12 +129,16 @@ const myGame = new p5((main) => {
     sprite[4] = main.loadImage('sprites/pipe/pipe_head_top.png');
     sprite[5] = main.loadImage('sprites/pipe/pipe_head_bottom.png');
     sprite[6] = main.loadImage('sprites/pipe/pipe_body.png');
+    bestBirdSprite[0] = main.loadImage('sprites/bird/bird-best-1.png');
+    bestBirdSprite[1] = main.loadImage('sprites/bird/bird-best-2.png');
+    bestBirdSprite[2] = main.loadImage('sprites/bird/bird-best-3.png');
+    bestBirdSprite[3] = main.loadImage('sprites/bird/bird-best-4.png');
   };
 
   main.setup = () => {
     main.createCanvas(360, 720);
     for (let i = 0; i < POPULATION_SIZE; i += 1) {
-      bird[i] = new Bird(main, sprite, 4);
+      bird[i] = new Bird(main, sprite, 4, false);
     }
     bg = new Background(skyRes, gndRes, gndHeight, 2);
     main.textFont(font);

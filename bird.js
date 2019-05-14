@@ -1,7 +1,7 @@
 import NeuralNetwork from './neuralnetwork.js';
 
 export default class Bird {
-  constructor(main, sprite, frameCount) {
+  constructor(main, sprite, frameCount, isBest) {
     this.pos = main.createVector(100, 100 + Math.random() * (main.height / 2));
     this.vel = main.createVector(0, 0);
     this.gravity = main.createVector(0, 0.3);
@@ -15,6 +15,7 @@ export default class Bird {
     this.brain = new NeuralNetwork(4, 3, 1);
     this.fitnessScore = 0;
     this.doScoring = true;
+    this.isBest = isBest;
   }
 
   fly() {
