@@ -152,7 +152,7 @@ const myGame = new p5((main) => {
     bg.display(main);
     if (birdsDead !== POPULATION_SIZE) bg.scroll();
     for (let i = 0; i < pipeCount; i += 1) {
-      if (pipe[i].getPipePairPositionX() <= main.width) pipe[i].display(main, gndHeight);
+      if (pipe[i].getPipePairPositionX() >= -77 && pipe[i].getPipePairPositionX() <= main.width) pipe[i].display(main, gndHeight);
       if (birdsDead !== POPULATION_SIZE) pipe[i].move();
     }
     scoring();
