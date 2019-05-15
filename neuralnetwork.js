@@ -134,7 +134,7 @@ export default class NeuralNetwork {
         } else {
           main.stroke('orange'); // negative weights are colored orange
         }
-        main.strokeWeight(main.map(Math.abs(this.weights_ih.matrix[i][j]), 0, 1, 0.5, 3.5));
+        main.strokeWeight(main.map(Math.abs(this.weights_ih.matrix[i][j]), 0, 1, 0.5, 4));
         main.line(inputNodes[j].posX, inputNodes[j].posY, hiddenNodes[i].posX, hiddenNodes[i].posY);
       }
     }
@@ -146,7 +146,7 @@ export default class NeuralNetwork {
         } else {
           main.stroke('orange'); // negative weights are colored orange
         }
-        main.strokeWeight(main.map(Math.abs(this.weights_ho.matrix[i][j]), -1, 1, 0.5, 3.5));
+        main.strokeWeight(main.map(Math.abs(this.weights_ho.matrix[i][j]), -1, 1, 0.5, 4));
         main.line(hiddenNodes[j].posX, hiddenNodes[j].posY, outputNodes[i].posX, outputNodes[i].posY);
       }
     }
