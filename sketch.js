@@ -7,10 +7,10 @@ const myGame = new p5((main) => {
   const MUTATION_RATE = 0.09;
   const POPULATION_SIZE = 50;
   const gndHeight = 115;
+  const pipeCount = 5000;
   const sprite = [];
   const bestBirdSprite = [];
   const pipe = [];
-  const pipeCount = 5000;
   let doScoring = true;
   let globalScore = 0;
   let bestGlobal = 0;
@@ -80,8 +80,6 @@ const myGame = new p5((main) => {
       if (!bird[i].dead) {
         main.textSize(25);
         main.text('Bird ' + i + '\'s neural network', 20, 400);
-        // main.text('Fitness Score: ', 20, 400);
-        // main.text(Math.floor(bird[i].fitnessScore), 200, 400);
         main.textSize(17);
         main.textAlign(main.RIGHT);
         main.text('X-Distance to Pipe ', 158, 446);
