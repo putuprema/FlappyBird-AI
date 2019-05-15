@@ -127,18 +127,26 @@ export default class NeuralNetwork {
       nodePosY += 45;
     }
 
-    main.stroke('orange');
-
     for (let i = 0; i < this.weights_ih.rows; i += 1) {
       for (let j = 0; j < this.weights_ih.columns; j += 1) {
-        main.strokeWeight(main.map(this.weights_ih.matrix[i][j], -1, 1, 0.5, 3.5));
+        if (this.weights_ih.matrix[i][j] >= 0) {
+          main.stroke('blue'); // positive weights are colored blue
+        } else {
+          main.stroke('orange'); // negative weights are colored orange
+        }
+        main.strokeWeight(main.map(Math.abs(this.weights_ih.matrix[i][j]), 0, 1, 0.5, 3.5));
         main.line(inputNodes[j].posX, inputNodes[j].posY, hiddenNodes[i].posX, hiddenNodes[i].posY);
       }
     }
 
     for (let i = 0; i < this.weights_ho.rows; i += 1) {
       for (let j = 0; j < this.weights_ho.columns; j += 1) {
-        main.strokeWeight(main.map(this.weights_ho.matrix[i][j], -1, 1, 0.5, 3.5));
+        if (this.weights_ho.matrix[i][j] >= 0) {
+          main.stroke('blue'); // positive weights are colored blue
+        } else {
+          main.stroke('orange'); // negative weights are colored orange
+        }
+        main.strokeWeight(main.map(Math.abs(this.weights_ho.matrix[i][j]), -1, 1, 0.5, 3.5));
         main.line(hiddenNodes[j].posX, hiddenNodes[j].posY, outputNodes[i].posX, outputNodes[i].posY);
       }
     }
