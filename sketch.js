@@ -80,8 +80,11 @@ const myGame = new p5((main) => {
       if (!bird[i].dead) {
         main.textSize(25);
         main.text('Bird ' + i + '\'s neural network', 20, 400);
-        main.textSize(17);
         main.textAlign(main.RIGHT);
+        // main.text(Math.floor(bird[i].fitnessScore), main.width - 10, 400);
+        // main.textSize(17);
+        // main.text('Fitness Score', main.width - 10, 370);
+        main.textSize(17);
         main.text('X-Distance to Pipe ', 158, 446);
         main.text('Distance to Top Pipe ', 158, 491);
         main.text('Distance to Bottom Pipe ', 158, 536);
