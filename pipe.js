@@ -1,7 +1,7 @@
 export default class Pipe {
   constructor(main, gndHeight, initX, headTop, headBottom, body) {
     this.gap = 150;
-    this.lengthTop = 30 + (Math.random() * (main.height / 2 + 1));
+    this.lengthTop = 80 + Math.floor(Math.random() * 250);
     this.lengthBottom = (main.height - gndHeight) - (this.lengthTop + this.gap);
     this.headTop = headTop;
     this.headBottom = headBottom;

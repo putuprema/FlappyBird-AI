@@ -1,6 +1,8 @@
+import NeuralNetwork from './neuralnetwork.js';
+
 export default class Bird {
-  constructor(main, sprite, frameCount) {
-    this.pos = main.createVector(100, 100);
+  constructor(main, sprite, frameCount, isBest) {
+    this.pos = main.createVector(100, 100 + Math.random() * (main.height / 2));
     this.vel = main.createVector(0, 0);
     this.gravity = main.createVector(0, 0.3);
     this.dead = false;
@@ -10,6 +12,10 @@ export default class Bird {
     this.spriteIdx = 0;
     this.animSpeed = 0.3;
     this.animLen = frameCount;
+    this.brain = new NeuralNetwork(4, 3, 1);
+    this.fitnessScore = 0;
+    this.doScoring = true;
+    this.isBest = isBest;
   }
 
   fly() {
@@ -39,17 +45,25 @@ export default class Bird {
     return this.pos.y - (this.h / 2);
   }
 
-  getDistances(pipePairPositionX, topPipePositionY, bottomPipePostitionY, birdPostitionY) {
+  getDistances(pipePairPositionX, topPipePositionY, bottomPipePostitionY, birdPostitionY, gndPosY) {
     this.distToPipe = pipePairPositionX - (this.getPositionX() + this.w);
     this.distToTopPipe_y = birdPostitionY - topPipePositionY;
-    this.distToBottomPipe_y = bottomPipePostitionY - (birdPostitionY + this.h);
+    this.distToBottomPipe_y = bottomPipePostitionY - (this.pos.y + (this.h / 2 - 6));
+    this.distToGround = gndPosY - (this.pos.y + (this.h / 2 - 6));
   }
 
   getDistanceTo(toWhich) {
     if (toWhich === 'pipe') return this.distToPipe;
     if (toWhich === 'topPipe_y') return this.distToTopPipe_y;
     if (toWhich === 'bottomPipe_y') return this.distToBottomPipe_y;
+    if (toWhich === 'ground') return this.distToGround;
     return 0;
+  }
+
+  think() {
+    this.inputs = [this.distToPipe, this.distToTopPipe_y, this.distToBottomPipe_y, this.vel.y];
+    this.outputs = this.brain.feedForward(this.inputs);
+    if (this.outputs[0] >= 0.5) this.fly();
   }
 
   checkCollision(main, gndHeight) {
@@ -63,5 +77,13 @@ export default class Bird {
       this.spriteIdx = 1;
       if (this.vel.y < 0) this.vel.limit(0);
     }
+  }
+
+  updateFitness() {
+    if (this.distToBottomPipe_y >= 8 && this.distToTopPipe_y >= 20) this.fitnessScore += 100;
+    else this.fitnessScore -= Math.abs(this.distToTopPipe_y);
+    if (this.distToPipe < -30 && this.doScoring) {
+      this.fitnessScore += 1000; this.doScoring = false;
+    } else if (this.distToPipe < -131) this.doScoring = true;
   }
 }
