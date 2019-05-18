@@ -137,7 +137,7 @@ const myGame = new p5((main) => {
   };
 
   main.setup = () => {
-    main.createCanvas(360, 720, main.WEBGL);
+    main.createCanvas(360, 720);
     for (let i = 0; i < POPULATION_SIZE; i += 1) {
       bird[i] = new Bird(main, sprite, 4, false);
     }
